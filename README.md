@@ -15,7 +15,7 @@
 - `enc_mnist_imgs.data` contains 60k encrypted mnist images and `enc_mnist_labels.data` contains 60k corresponding encrypted labels.
 - The images and labels are encrypted with AES-GCM encryption algorithm, with a 16 byte MAC and 12 byte IV attached to each encrypted element (e.g. image or label).
 - For clearer comprehension, the encrypted image and label files have the form below:
-![enc_dataset](imgs/enc_dataset.png)
+![enc_dataset](imgs/enc_mnist.png)
 - We use a file on ramdisk i.e `/dev/shm/plinius_data` to emulate PM. If you have a real PM device modify that path in the file: [Romulus_helper.h](App/Romulus_helper.h). For example: `/mnt/pmem0/plinius_data`
 - Plinius is mainly designed for model training but we can do inference too. We added the default mnist test set (10k unencrypted labeled images) just for the purpose of testing the accuracy of our trained model. 
 - In a real setting a programmer who wishes to do inference with Plinius will have to encrypt his inference set and load to PM following the same idea/workflow.
