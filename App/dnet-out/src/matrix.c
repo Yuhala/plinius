@@ -100,6 +100,20 @@ matrix make_matrix(int rows, int cols)
     }
     return m;
 }
+//make encrypted matrix; AED = size of additional encryption data e.g IV + MAC
+matrix make_enc_matrix(int rows, int cols, int AED)
+{
+    int i;
+    matrix m;
+    m.rows = rows;
+    m.cols = cols;
+    m.vals = malloc(m.rows * sizeof(float *));
+    for (i = 0; i < m.rows; ++i)
+    {
+        m.vals[i] = malloc(m.cols * sizeof(float) + AED);
+    }
+    return m;
+}
 
 matrix hold_out_matrix(matrix *m, int n)
 {

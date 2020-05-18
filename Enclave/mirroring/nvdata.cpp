@@ -1,7 +1,7 @@
 /*
  * Created on Tue Apr 14 2020
  *
- * Copyright (c) 2020 xxx xxxx, xxxx
+ * Copyright (c) 2020 xxxx xxxx, xxxx
  */
 #include "nvdata.h"
 
@@ -46,50 +46,27 @@ void NVData::alloc()
 void NVData::fill_pm_data(data *ptr)
 {
     size_t img_size = IMG_SIZE * sizeof(float);
-    /* 1. Encrypt training data */
-    char temp_ct[4 * 1024]; //temp ciphertext 4kb per enc image
-    char temp_pt[4 * 1024]; //temp plaintext
-
-    /* 2. Copy encrypted training data */
+    
 
     for (int i = 0; i < NUM_IMGS; i++)
     {
-        printf("Encrypting image %d\n", i);
-        //copy to temp array
-        memcpy(temp_pt, ptr->X.vals[i], img_size);
-        //encrypt image
-        encryptData((void *)temp_pt, img_size, temp_ct, img_size + ADD_ENC_DATA_SIZE, GCM);
-        //copy encrypted image to pm
-        memcpy(X->vals[i], temp_ct, img_size + ADD_ENC_DATA_SIZE);
+        memcpy(X->vals[i], ptr->X.vals[i], img_size + ADD_ENC_DATA_SIZE);
+        printf("writing image: %d",i);
+       
 
-        /* for (int j = 0; j < IMG_SIZE; j++)
-        {   
-
-            //copy encrypted image to pm
-            X->vals[i][j] = ptr->X.vals[i][j];
-            //printf("Img pixel[%d][%d]: %f\n", i, j, X->vals[i][j]);
-        } */
+        
     }
 
     size_t label_size = NUM_CLASSES * sizeof(float); //each label row is the size of 10 labels but is 1 only at the index of the correct class
     //read labels
     for (int i = 0; i < NUM_LABELS; i++)
     {
-        printf("Encrypting label %d\n", i);
-        //copy to temp array
-        memcpy(temp_pt, ptr->y.vals[i], label_size);
-        //encrypt image
-        encryptData((void *)temp_pt, label_size, temp_ct, label_size + ADD_ENC_DATA_SIZE, GCM);
-        //copy encrypted image to pm
-        memcpy(Y->vals[i], temp_ct, label_size + ADD_ENC_DATA_SIZE);
+        memcpy(Y->vals[i], ptr->y.vals[i], label_size + ADD_ENC_DATA_SIZE);
+        printf("writing label: %d",i);        
 
-        /* for (int j = 0; j < NUM_CLASSES; j++)
-        {
-            Y->vals[i][j] = ptr->y.vals[i][j];
-            //printf("Label pixel[%d][%d]: %f\n", i, j, Y->vals[i][j]);
-        }  */
+        
     }
-    //nvdata->y = Y;
+    
     //});
     printf("----Filled PM data----\n");
     data_present = 1;

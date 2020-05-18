@@ -5,12 +5,7 @@
 #include "mirroring/dnet_mirror.h"
 #include "mirroring/nvdata.h"
 
-#define CIFAR_WEIGHTS "/home/ubuntu/xxx/sgx-dnet-romulus/App/dnet-out/backup/cifar.weights"
-#define TINY_WEIGHTS "/home/ubuntu/xxx/sgx-dnet-romulus/App/dnet-out/backup/tiny.weights"
-#define MNIST_WEIGHTS "/home/ubuntu/xxx/sgx-dnet-romulus/App/dnet-out/backup/mnist.weights"
-#define USE_DISK
-#define USE_NVDATA
-#define CRASH_TESTx
+
 #define NUM_ITERATIONS 10
 
 comm_info *comm_in = nullptr;
@@ -57,7 +52,7 @@ void rm_nv_net()
         romuluslog::RomulusLog::put_object<NVModel>(0, nullptr);
     }
 }
-//sets pmem training data
+//sets pmem training data: for testing purposes with unencrypted data
 void set_nv_data(data *tdata)
 {
     pm_data = romuluslog::RomulusLog::get_object<NVData>(1);
@@ -87,15 +82,19 @@ void load_pm_data()
         romuluslog::RomulusLog::put_object<NVData>(1, pm_data);
         pm_data->alloc();
     }
-
     if (pm_data->data_present == 0)
     {
         //ocall to copy encrypted data into enclave
         ocall_read_disk_chunk();
-        printf("Starting to fill data in PM\n");
+        printf("Copying encrypted training data in PM\n");
         pm_data->fill_pm_data(comm_in->data_chunk);
         printf("---Copied training data to PM---\n");
     }
+
+    return;
+   
+
+    
 }
 void get_pm_batch()
 {
@@ -119,9 +118,7 @@ void ecall_trainer(list *sections, data *training_data, int bsize, comm_info *in
         return;
     }
 
-    comm_in = info;
-    batch_size = bsize;
-    //remove previous nv model
+    comm_in = info;    
     rm_nv_net();
 
     train_mnist(sections, training_data, bsize);
@@ -145,22 +142,21 @@ void train_mnist(list *sections, data *training_data, int pmem)
     float progress = 0;
     int count = 0;
     int chunk_counter = 0;
-    //batch_size = 150; //or net->batch
-    char *path = MNIST_WEIGHTS;
+    
     unsigned int num_params;
+    //allocate enclave model
     net = create_net_in(sections);
 
-    //instantiate nvmodel
+    //mirror in if PM net exists
     nv_net = romuluslog::RomulusLog::get_object<NVModel>(0);
     if (nv_net != nullptr)
     {
+        //mirror in and resume training
         nv_net->mirror_in(net, &avg_loss);
     }
 
     int epoch = (*net->seen) / N;
-    count = 0;
-    //net->batch = batch_size;
-    //net->max_batches = N / batch_size; //number of training iterations
+    count = 0;    
     num_params = get_param_size(net);
     comm_in->model_size = (double)(num_params * 4) / (1024 * 1024);
 
@@ -168,23 +164,27 @@ void train_mnist(list *sections, data *training_data, int pmem)
     printf("Net batch size: %d\n", net->batch);
     printf("Number of params: %d Model size: %f\n", num_params, comm_in->model_size);
 
+    //set batch size
+    batch_size = net->batch;
     //allocate training data
     train = data_alloc(batch_size);
     //load data from disk to PM
     load_pm_data();
-    //allocate nvmodel here NB: all net attribs have been instantitated after one training iteratioN
-    /* if (nv_net == nullptr) //mirror model absent
+    
+    
+    //allocate nvmodel here 
+     if (nv_net == nullptr) //mirror model absent
     {
         nv_net = (NVModel *)TM_PMALLOC(sizeof(struct NVModel));
         romuluslog::RomulusLog::put_object<NVModel>(0, nv_net);
         nv_net->allocator(net);
-        avg_loss = -1; //we are training from 0 here
-    } */
-    count = 0;
+        avg_loss = -1; //we are training from 0 
+    } 
+   
     //training iterations
-    while ((cur_batch < net->max_batches || net->max_batches == 0) && count < 1)
+    while ((cur_batch < net->max_batches || net->max_batches == 0))
     {
-        count++; //number of iterations for a single benchmarking comm.
+       
         cur_batch = get_current_batch(net);
 
         /* Get and decrypt batch of pm data */
@@ -202,15 +202,16 @@ void train_mnist(list *sections, data *training_data, int pmem)
         epoch = (*net->seen) / N;
 
         progress = ((double)cur_batch / net->max_batches) * 100;
-        if (cur_batch % batch_size == 0)
+        if (cur_batch % 1 == 0)
         { //print benchmark progress every 10 iters
             printf("Batch num: %ld, Seen: %.3f: Loss: %f, Avg loss: %f avg, L. rate: %f, Progress: %.2f%% \n",
                    cur_batch, (float)(*net->seen) / N, loss, avg_loss, get_current_rate(net), progress);
         }
 
-        //ocall_start_clock();
-        //nv_net->mirror_out(net, &avg_loss);
-        //ocall_stop_clock();
+        
+        //mirror model out to PM
+        nv_net->mirror_out(net, &avg_loss);
+        
     }
 
     printf("Done training mnist network..\n");
