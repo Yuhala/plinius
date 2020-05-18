@@ -170,7 +170,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
     train = data_alloc(batch_size);
     //load data from disk to PM
     load_pm_data();
-    
+    net->max_batches = 10;
     
     //allocate nvmodel here 
      if (nv_net == nullptr) //mirror model absent
@@ -236,8 +236,7 @@ void test_mnist(list *sections, data *test_data, int pmem)
 
     if (pmem)
     {
-        //test on pmem model
-        //return;
+     //dummy variable 
     }
 
     srand(12345);
@@ -251,8 +250,7 @@ void test_mnist(list *sections, data *test_data, int pmem)
         nv_net->mirror_in(net, &avg_loss);
         printf("Mirrored net in for testing\n");
     }
-    //network *net = create_net_in(sections);
-    //float loss = train_network_sgd(net, *test_data, 1);
+   
     if (net == NULL)
     {
         printf("No neural network in enclave..\n");

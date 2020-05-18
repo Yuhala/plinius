@@ -39,9 +39,11 @@ comm_info *comm_out;
 
 /* #define CONFIG_FILE "./App/dnet-out/cfg/mnist.cfg"
 #define MNIST_TRAIN_IMAGES "./App/dnet-out/data/mnist/train-images-idx3-ubyte" 
-#define MNIST_TRAIN_LABELS "./App/dnet-out/data/mnist/train-labels-idx1-ubyte"
+#define MNIST_TRAIN_LABELS "./App/dnet-out/data/mnist/train-labels-idx1-ubyte" */
+
 #define MNIST_TEST_IMAGES "./App/dnet-out/data/mnist/t10k-images-idx3-ubyte"
-#define MNIST_TEST_LABELS "./App/dnet-out/data/mnist/t10k-labels-idx1-ubyte" */
+#define MNIST_TEST_LABELS "./App/dnet-out/data/mnist/t10k-labels-idx1-ubyte"
+
 
 #define MNIST_CFG "./App/dnet-out/cfg/mnist.cfg"
 #define MNIST_TRAIN_IMAGES "./App/dnet-out/data/mnist/enc_mnist_imgs.data"
@@ -108,7 +110,7 @@ void read_all_mnist_data()
 void test_mnist(char *cfgfile)
 {
 
-    /* std::string img_path = MNIST_TEST_IMAGES;
+    std::string img_path = MNIST_TEST_IMAGES;
     std::string label_path = MNIST_TEST_LABELS;
     data test = load_enc_mnist_images(img_path, 10000);
     test.y = load_enc_mnist_labels(label_path, 10000);
@@ -116,7 +118,7 @@ void test_mnist(char *cfgfile)
 
     ecall_tester(global_eid, config_sections, &test, 0);
     printf("Mnist testing complete..\n");
-    free_data(test); */
+    free_data(test); 
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -169,7 +171,10 @@ int SGX_CDECL main(int argc, char *argv[])
     //mnist model config file
     char cfg[128] = MNIST_CFG;
 
+    //train a model on mnist via the Plinius workflow
     train_mnist(cfg);
+    //test the accuracy of the trained model
+    test_mnist(cfg);
 
     //Destroy enclave
     sgx_destroy_enclave(global_eid);

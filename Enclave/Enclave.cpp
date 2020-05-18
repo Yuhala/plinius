@@ -47,16 +47,7 @@ void fwrite(void *ptr, size_t size, size_t nmemb, int fp)
     char temp[BUFLEN];
     encryptData(ptr, nmemb * size, temp, nmemb * size + ADD_ENC_DATA_SIZE, GCM);
     ocall_fwrite(temp, sizeof(char), nmemb * size + ADD_ENC_DATA_SIZE);
-    //the following just to see diff btw encrypted and plaintext data
-    /* for (int i = 0; i < 20; i++)
-    {
-        printf("%c", temp[i]);
-    }
-    float* test = (float*)ptr;
-     for (int i = 0; i < 20; i++)
-    {
-        printf("%f", test[i]);
-    } */
+    
 #else
     ocall_fwrite(ptr, size, nmemb);
 #endif
