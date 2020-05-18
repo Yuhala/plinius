@@ -6,7 +6,7 @@
 ## Training a model in Plinius
 ### Intro
 - As described in the paper, training a model in Plinius is summarized in the workflow below:
-![workflow](imgs/workflow.pdf)
+![workflow](imgs/workflow.png)
 - For the sake of simplicity we assume RA and SC have been done successfully and the encryption key has been provisioned to the enclave.i.e `enc_key` variable in [trainer.cpp](Enclave/train/trainer.cpp).
 - You can find an encrypted version of the MNIST data set in: `App/dnet-out/data/mnist`.
 - `enc_mnist_imgs.data` contains 60k encrypted mnist images and `enc_mnist_labels.data` contains 60k corresponding encrypted labels.
