@@ -1,0 +1,39 @@
+
+
+/* Enclave.edl - Top EDL file. */
+
+
+
+enclave {
+    
+    include "dnet_types.h" /* network, data, list */
+
+    from "sgx_tstdc.edl" import *;
+    from "dnet-in/train/Trainer.edl" import *;
+    
+
+    trusted {
+
+        public void ecall_init([user_check]void*per_out,[user_check]uint8_t *addr);       
+        public void ecall_nvram_worker(int val,size_t tid);
+        public void empty_ecall();
+       
+        
+    };
+
+    untrusted {
+        void ocall_open_file([in,string]const char* filename, flag oflag);
+        void ocall_close_file();
+        void ocall_fread([out,size=size,count=nmemb]void *ptr, size_t size, size_t nmemb);
+        void ocall_fwrite([in,size=size,count=nmemb]void *ptr, size_t size, size_t nmemb);
+       
+        void my_ocall_close();       
+        void ocall_read_disk_chunk();
+        void ocall_print_string([in, string] const char *str);
+
+        /* For benchmarking purposes */
+         void ocall_start_clock();
+         void ocall_stop_clock();
+         void ocall_add_loss();
+    };
+};

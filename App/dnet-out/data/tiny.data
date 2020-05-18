@@ -1,0 +1,3 @@
+classes=1000
+names  = App/dnet-out/data/labels/imagenet.shortnames.list
+top=5

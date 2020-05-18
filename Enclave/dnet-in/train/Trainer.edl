@@ -1,0 +1,26 @@
+/*
+ * Author: xxx xxxx
+ * EDL file for trusted darknet training in the enclave
+ *
+ */
+
+ enclave{
+
+
+     trusted {
+         /* pmem = 1 ==> there is a saved net in pmem; 0 otherwise */
+         public void ecall_trainer([user_check]list* sections,[user_check] data* training_data, int pmem,[user_check]comm_info* o_point);
+         public void ecall_tester([user_check]list* sections,[user_check] data* test_data, int pmem);
+         public void ecall_classify([user_check]list* sections,[user_check]list* labels, [user_check]image* im);
+         public void ecall_set_data([user_check]data *data);
+
+     };
+
+    untrusted {
+        void ocall_free_sec([user_check]section *sec);
+        void ocall_free_list([user_check]list *list);
+    };
+
+
+
+ };
