@@ -46,15 +46,11 @@ void NVData::alloc()
 void NVData::fill_pm_data(data *ptr)
 {
     size_t img_size = IMG_SIZE * sizeof(float);
-    
 
     for (int i = 0; i < NUM_IMGS; i++)
     {
         memcpy(X->vals[i], ptr->X.vals[i], img_size + ADD_ENC_DATA_SIZE);
-        printf("writing image: %d",i);
-       
-
-        
+        printf("writing image: %d\n", i);
     }
 
     size_t label_size = NUM_CLASSES * sizeof(float); //each label row is the size of 10 labels but is 1 only at the index of the correct class
@@ -62,11 +58,9 @@ void NVData::fill_pm_data(data *ptr)
     for (int i = 0; i < NUM_LABELS; i++)
     {
         memcpy(Y->vals[i], ptr->y.vals[i], label_size + ADD_ENC_DATA_SIZE);
-        printf("writing label: %d",i);        
-
-        
+        printf("writing label: %d\n", i);
     }
-    
+
     //});
     printf("----Filled PM data----\n");
     data_present = 1;
