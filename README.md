@@ -17,7 +17,7 @@
 - For clearer comprehension, the encrypted image and label files have the form below:
 ![enc_dataset](imgs/enc_dataset.png)
 - We use a file on ramdisk i.e `/dev/shm/plinius_data` to emulate PM. If you have a real PM device modify that path in the file: [Romulus_helper.h](App/Romulus_helper.h). For example: `/mnt/pmem0/plinius_data`
-- Plinius is mainly designed for model training but we can do inference too. We added the default mnist test set just for the purpose of testing the accuracy of our trained model. 
+- Plinius is mainly designed for model training but we can do inference too. We added the default mnist test set (10k labeled images) just for the purpose of testing the accuracy of our trained model. 
 - In a real setting a programmer who wishes to do inference with Plinius will have to encrypt his inference set and load to PM following the same idea/workflow.
 - We used mnist data set as a proof of concept, the same idea can be applied with a different data set once the workflow is understood.
 
