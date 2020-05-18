@@ -23,7 +23,7 @@
 
 ### Training the model
 - As described in the paper, we first initialize sgx-rom in the main routine via `rom_init` and `ecall_init` and invoke the `train_mnist` function.
-- `train_mnist` reads the corresponding network/model configuration file and parses it into a config data structure and sends this to the enclave runtime via the `ecall_trainer` ecall. The config file describes a model with 4 RELU layers with a batch size of 128. Feel free to modify the config as it suits you, but make sure to follow the correct syntax (i.e Darknet config file syntax).
+- `train_mnist` reads the corresponding network/model configuration file and parses it into a config data structure and sends this to the enclave runtime via the `ecall_trainer` ecall. The config file describes a model with 4 RELU layers + other intermediary layers, batch size of 128, learning rate of 0.1 and other important hyperparameters. Feel free to modify the config as it suits you, but make sure to follow the correct syntax (i.e Darknet config file syntax).
 - In the enclave we load the encrypted data once into PM and begin the training iterations. 
 - For each iteration, the routine reads batches of encrypted data from PM, decrypts the former in the enclave, trains the model with the batch, and the mirrors-out weights to PM.
 ### Running the program

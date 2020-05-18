@@ -5,7 +5,6 @@
 #include "mirroring/dnet_mirror.h"
 #include "mirroring/nvdata.h"
 
-
 #define NUM_ITERATIONS 10
 
 comm_info *comm_in = nullptr;
@@ -92,9 +91,6 @@ void load_pm_data()
     }
 
     return;
-   
-
-    
 }
 void get_pm_batch()
 {
@@ -104,9 +100,14 @@ void get_pm_batch()
         printf("No PM data\n");
         abort(); //abort training
     }
-    printf("Reading and decrypting batch of: %d from PM\n", batch_size);
+
+    if (count % 10 == 0)
+    {
+        //print this every 10 iters
+        printf("Reading and decrypting batch of: %d from PM\n", batch_size);
+    }
     pm_data->deep_copy_data(&train, batch_size);
-    printf("Obtained data batch from PM\n");
+    //printf("Obtained data batch from PM\n");
 }
 void ecall_trainer(list *sections, data *training_data, int bsize, comm_info *info)
 {
@@ -118,7 +119,7 @@ void ecall_trainer(list *sections, data *training_data, int bsize, comm_info *in
         return;
     }
 
-    comm_in = info;    
+    comm_in = info;
     rm_nv_net();
 
     train_mnist(sections, training_data, bsize);
@@ -142,7 +143,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
     float progress = 0;
     int count = 0;
     int chunk_counter = 0;
-    
+
     unsigned int num_params;
     //allocate enclave model
     net = create_net_in(sections);
@@ -156,7 +157,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
     }
 
     int epoch = (*net->seen) / N;
-    count = 0;    
+    count = 0;
     num_params = get_param_size(net);
     comm_in->model_size = (double)(num_params * 4) / (1024 * 1024);
 
@@ -172,20 +173,20 @@ void train_mnist(list *sections, data *training_data, int pmem)
     load_pm_data();
     //you can reduce the number of iters to a smaller num just for testing purposes
     //net->max_batches = 10;
-    
-    //allocate nvmodel here 
-     if (nv_net == nullptr) //mirror model absent
+
+    //allocate nvmodel here
+    if (nv_net == nullptr) //mirror model absent
     {
         nv_net = (NVModel *)TM_PMALLOC(sizeof(struct NVModel));
         romuluslog::RomulusLog::put_object<NVModel>(0, nv_net);
         nv_net->allocator(net);
-        avg_loss = -1; //we are training from 0 
-    } 
-   
+        avg_loss = -1; //we are training from 0
+    }
+
     //training iterations
     while ((cur_batch < net->max_batches || net->max_batches == 0))
     {
-       
+        count++;
         cur_batch = get_current_batch(net);
 
         /* Get and decrypt batch of pm data */
@@ -209,10 +210,8 @@ void train_mnist(list *sections, data *training_data, int pmem)
                    cur_batch, (float)(*net->seen) / N, loss, avg_loss, get_current_rate(net), progress);
         }
 
-        
         //mirror model out to PM
         nv_net->mirror_out(net, &avg_loss);
-        
     }
 
     printf("Done training mnist network..\n");
@@ -237,11 +236,11 @@ void test_mnist(list *sections, data *test_data, int pmem)
 
     if (pmem)
     {
-     //dummy variable 
+        //dummy variable
     }
 
     srand(12345);
-    float avg_loss = 0;   
+    float avg_loss = 0;
     network *net = create_net_in(sections);
 
     //instantiate nvmodel
@@ -251,7 +250,7 @@ void test_mnist(list *sections, data *test_data, int pmem)
         nv_net->mirror_in(net, &avg_loss);
         printf("Mirrored net in for testing\n");
     }
-   
+
     if (net == NULL)
     {
         printf("No neural network in enclave..\n");
