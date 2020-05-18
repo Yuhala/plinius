@@ -241,8 +241,7 @@ void test_mnist(list *sections, data *test_data, int pmem)
     }
 
     srand(12345);
-    float avg_loss = 0;
-    char *weightfile = MNIST_WEIGHTS;
+    float avg_loss = 0;   
     network *net = create_net_in(sections);
 
     //instantiate nvmodel
