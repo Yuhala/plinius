@@ -112,8 +112,8 @@ void test_mnist(char *cfgfile)
 
     std::string img_path = MNIST_TEST_IMAGES;
     std::string label_path = MNIST_TEST_LABELS;
-    data test = load_enc_mnist_images(img_path, 10000);
-    test.y = load_enc_mnist_labels(label_path, 10000);
+    data test = load_mnist_images(img_path, 10000);
+    test.y = load_mnist_labels(label_path, 10000);
     list *config_sections = read_cfg(cfgfile);
 
     ecall_tester(global_eid, config_sections, &test, 0);
