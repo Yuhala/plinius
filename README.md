@@ -31,6 +31,6 @@
 - Build the project using `make` command.
 - Run the program via `./app`
 - The encrypted data will be read once into PM and training will begin. You can see the loss/average loss decreasing as training proceeds.
-- After training the program will invoke `test_mnist` to test the accuracy of the trained model.
+- After training, the program will invoke `test_mnist` to test the accuracy of the trained model.
 
 - Have fun !!!
