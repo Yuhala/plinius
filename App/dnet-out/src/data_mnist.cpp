@@ -165,23 +165,13 @@ data load_enc_mnist_images(std::string path, size_t chunk_size)
     // Read file
     std::ifstream file(path, std::ios::binary);
 
-    uint32_t magic_num = 0;
+    //uint32_t magic_num = 0;
     uint32_t num_images = 0;
     uint32_t rows = 0;
     uint32_t cols = 0;
     uint32_t image_size = 0;
 
-    // Read the magic num (file signature) and dataset meta data
-    /* if (!file.is_open)
-        ERROR(); */
-    /*  file.read(reinterpret_cast<char *>(&magic_num), sizeof(magic_num));
-    magic_num = swap_bytes(magic_num);
-    printf("magic num is: %d\n", magic_num);
-
-    if (magic_num != 2051)
-        throw std::runtime_error("Invalid MNIST image file!"); */
-
-    //num_images = swap_bytes(num_images);
+   
     file.read((char *)&rows, sizeof(rows));
     //rows = swap_bytes(rows);
     file.read((char *)&cols, sizeof(cols));
@@ -194,13 +184,7 @@ data load_enc_mnist_images(std::string path, size_t chunk_size)
     data d = {0};
     d.shallow = 0;
     matrix X = make_enc_matrix(chunk_size, image_size, AED); //images
-    //NB: d.y will be filled in the routine that calls this one via load_mnist_labels
-    /**
-     *        i/j_ _ _
-     * X.vals[0]|_|_|_| --> 1 grayscale image
-     * X.vals[1]|_|_|_|
-     * X.vals[2]|_|_|_|
-     */
+    
     if (chunk_size > num_images)
     {
         printf("chunk_size > num_images\n");
@@ -213,16 +197,9 @@ data load_enc_mnist_images(std::string path, size_t chunk_size)
 
         file.read(temp, size);
         memcpy(X.vals[i], temp, size);
-
-        /*  //copy byte by byte into X.vals
-        for (int j = 0; j < image_size; j++)
-        {
-            file.read((char *)&temp, sizeof(temp));
-            X.vals[i][j] = (float)temp;
-        } */
+        
     }
-    //NB. the same bytes/images will be read each time but its equivalent
-    //make X the image data values of d
+   
     d.X = X;
     //scale_data_rows(d, 1. / 255);
     //print_matrix(X);
@@ -238,34 +215,14 @@ matrix load_enc_mnist_labels(std::string path, size_t chunk_size)
     std::ifstream file(path, std::ios::binary);
     //static size_t chunk_read = 0;
 
-    uint32_t magic_num = 0;
-    uint32_t num_labels = 0;
-    /* 
-    if (!file.is_open)
-        ERROR(); */
-    // Read the magic num (file signature) and dataset meta data
-    /* file.read((char *)&magic_num, sizeof(magic_num));
-    magic_num = swap_bytes(magic_num);
-
-    if (magic_num != 2049)
-        throw std::runtime_error("Invalid MNIST label file!"); */
+    //uint32_t magic_num = 0;
+    uint32_t num_labels = 0;  
 
     file.read((char *)&num_labels, sizeof(num_labels));
     //num_labels = swap_bytes(num_labels);
     printf("num labels: %d\n", num_labels);
     matrix Y = make_enc_matrix(chunk_size, NUM_CLASSES, AED); //labels
-    //this matrix will be d.y for the mnist training/test data
-    /**
-     *        i/j_ _ _
-     * Y.vals[0]|0|1|0| --> the corresponding label is the class corresponding to the 1
-     * Y.vals[1]|1|0|0|
-     * Y.vals[2]|0|1|0|
-     */
-
-    /**
-     * Pxxxx
-     * 1 byte (sizeof char) is enough to store numbers from 0 to 9
-     */
+   
     char label_class;
     if (chunk_size > num_labels)
     {
@@ -279,10 +236,7 @@ matrix load_enc_mnist_labels(std::string path, size_t chunk_size)
 
         file.read(temp, size);
         memcpy(Y.vals[i], temp, size);
-        //label is an int in [0,9]
-        /*  file.read(&label_class, 1);
-        Y.vals[i][(int)label_class] = 1; */
-        //std::cout << "Label: " << (int)label_class << std::endl;
+        
     }
 
     //print_matrix(Y);

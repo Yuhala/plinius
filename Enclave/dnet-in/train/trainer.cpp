@@ -170,7 +170,8 @@ void train_mnist(list *sections, data *training_data, int pmem)
     train = data_alloc(batch_size);
     //load data from disk to PM
     load_pm_data();
-    net->max_batches = 10;
+    //you can reduce the number of iters to a smaller num just for testing purposes
+    //net->max_batches = 10;
     
     //allocate nvmodel here 
      if (nv_net == nullptr) //mirror model absent
@@ -202,7 +203,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
         epoch = (*net->seen) / N;
 
         progress = ((double)cur_batch / net->max_batches) * 100;
-        if (cur_batch % 1 == 0)
+        if (cur_batch % 10 == 0)
         { //print benchmark progress every 10 iters
             printf("Batch num: %ld, Seen: %.3f: Loss: %f, Avg loss: %f avg, L. rate: %f, Progress: %.2f%% \n",
                    cur_batch, (float)(*net->seen) / N, loss, avg_loss, get_current_rate(net), progress);
