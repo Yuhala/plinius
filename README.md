@@ -8,7 +8,7 @@
 ### Intro
 - As described in the paper, training a model in Plinius is summarized in the workflow below:
 ![workflow](imgs/workflow.png)
-- For the sake of simplicity we assume RA and SC have been done successfully and the encryption key has been provisioned to the enclave.i.e `enc_key` variable in [trainer.cpp](Enclave/train/trainer.cpp). This is the same key used for encrypting the mnist data set.
+- For the sake of simplicity we assume RA and SC have been done successfully and the encryption key has been provisioned to the enclave.i.e `enc_key` variable in [trainer.cpp](Enclave/dnet-in/train/trainer.cpp). This is the same key used for encrypting the mnist data set.
 - We created an encrypted version of the MNIST data set, located in the `App/dnet-out/data/mnist` folder.
 - The encrypted images are divided into four chunks: `img.a-e`. 
 - Combine the images into one file with the command: `cat img.?? > enc_mnist_imgs.data`
@@ -32,5 +32,6 @@
 - Run the program via `./app`
 - The encrypted data will be read once into PM and training will begin. You can see the loss/average loss decreasing as training proceeds.
 - After training, the program will invoke `test_mnist` to test the accuracy of the trained model.
+- The above model config yields 94.7% accuracy on the 10k test set for 1 training epoch(500 iterations). A much larger accuracy can be obtained with a well tweaked model configuration.
 
 - Have fun !!!
