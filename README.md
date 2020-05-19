@@ -31,6 +31,7 @@
 - Build the project using `make` command.
 - Run the program via `./app`
 - The encrypted data will be read once into PM and training will begin. You can see the loss/average loss decreasing as training proceeds.
+- To test the fault tolerance capabilities, interrupt the program with a `ctrl+c` and restart it again. Upon restart, training data is already in PM and training resumes from the iteration it left off.
 - After training, the program will invoke `test_mnist` to test the accuracy of the trained model.
 - The above model config yields 94.7% accuracy on the 10k test set for 1 training epoch(500 iterations). A much larger accuracy can be obtained with a well tweaked model configuration.
 
