@@ -12,21 +12,21 @@
 #include <stdlib.h> /* for malloc/free etc */
 
 #define CHECK_REF_POINTER(ptr, siz) do {	\
-	if (!(ptr) || ! sgx_is_outside_enclave((ptr), (siz)))	\
+	if (!(ptr) || ! sgx_is_outside_enclave((ptr), (siz))){\
 		printf("SGX_ERROR_INVALID_PARAMETER\n");\
-        abort();\
+        abort();}\
 } while (0)
 
 #define CHECK_UNIQUE_POINTER(ptr, siz) do {	\
-	if ((ptr) && ! sgx_is_outside_enclave((ptr), (siz)))	\
+	if ((ptr) && ! sgx_is_outside_enclave((ptr), (siz))){	\
 		printf("SGX_ERROR_INVALID_PARAMETER\n");\
-        abort();\
+        abort();}\
 } while (0)
 
 #define CHECK_ENCLAVE_POINTER(ptr, siz) do {	\
-	if ((ptr) && ! sgx_is_within_enclave((ptr), (siz)))	\
+	if ((ptr) && ! sgx_is_within_enclave((ptr), (siz))){	\
 		printf("SGX_ERROR_INVALID_PARAMETER\n");\
-        abort();\
+        abort();}\
 } while (0)
 
 #define ADD_ASSIGN_OVERFLOW(a, b) (	\
