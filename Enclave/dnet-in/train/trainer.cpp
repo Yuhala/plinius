@@ -4,6 +4,7 @@
 #include "trainer.h"
 #include "mirroring/dnet_mirror.h"
 #include "mirroring/nvdata.h"
+#include "checks.h"
 
 #define NUM_ITERATIONS 10
 
@@ -113,7 +114,14 @@ void get_pm_batch()
 }
 void ecall_trainer(list *sections, data *training_data, int bsize, comm_info *info)
 {
-
+    CHECK_REF_POINTER(sections, sizeof(list));
+    CHECK_REF_POINTER(training_data, sizeof(data));
+    CHECK_REF_POINTER(info, sizeof(comm_info));
+    /**
+     * load fence after pointer checks ensures the checks are done 
+     * before any assignment 
+     */
+    sgx_lfence();
     //fill pmem data if absent
     if (sections == NULL)
     {
@@ -222,11 +230,26 @@ void train_mnist(list *sections, data *training_data, int pmem)
 
 void ecall_tester(list *sections, data *test_data, int pmem)
 {
+    CHECK_REF_POINTER(sections, sizeof(list));
+    CHECK_REF_POINTER(test_data, sizeof(data));
+    /**
+     * load fence after pointer checks ensures the checks are done 
+     * before any assignment 
+     */
+    sgx_lfence();
     test_mnist(sections, test_data, pmem);
 }
 
 void ecall_classify(list *sections, list *labels, image *im)
 {
+    CHECK_REF_POINTER(sections, sizeof(list));
+    CHECK_REF_POINTER(labels, sizeof(list));
+    CHECK_REF_POINTER(im, sizeof(image));
+    /**
+     * load fence after pointer checks ensures the checks are done 
+     * before any assignment 
+     */
+    sgx_lfence();
     //classify_tiny(sections, labels, im, 5);
 }
 

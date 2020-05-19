@@ -10,6 +10,7 @@
 #include "Enclave_t.h"  /* print_string */
 #include <stdarg.h>
 #include <stdio.h>
+#include "checks.h"
 //#include <thread>
 #include "romulus/datastructures/TMStack.hpp"
 
@@ -47,7 +48,7 @@ void fwrite(void *ptr, size_t size, size_t nmemb, int fp)
     char temp[BUFLEN];
     encryptData(ptr, nmemb * size, temp, nmemb * size + ADD_ENC_DATA_SIZE, GCM);
     ocall_fwrite(temp, sizeof(char), nmemb * size + ADD_ENC_DATA_SIZE);
-    
+
 #else
     ocall_fwrite(ptr, size, nmemb);
 #endif
@@ -70,7 +71,14 @@ void empty_ecall()
 
 void ecall_init(void *per_out, uint8_t *base_addr_out)
 {
-    //pointer safety/validity checks: TODO
+
+    CHECK_REF_POINTER(per_out, sizeof(PersistentHeader));
+    CHECK_REF_POINTER(base_addr_out, sizeof(uint8_t));
+    /**
+     * load fence after pointer checks ensures the checks are done 
+     * before any assignment 
+     */
+    sgx_lfence();
 
     base_addr_in = base_addr_out;
     if (base_addr_in == NULL)
