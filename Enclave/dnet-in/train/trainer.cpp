@@ -104,7 +104,7 @@ void get_pm_batch()
         abort(); //abort training
     }
 
-    if (count % 10 == 0)
+    if (count % 5 == 0)
     {
         //print this every 10 iters
         printf("Reading and decrypting batch of: %d from PM\n", batch_size);
@@ -130,7 +130,7 @@ void ecall_trainer(list *sections, data *training_data, int bsize, comm_info *in
     }
 
     comm_in = info;
-    rm_nv_net();
+    //rm_nv_net();
 
     train_mnist(sections, training_data, bsize);
 }
@@ -214,7 +214,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
         epoch = (*net->seen) / N;
 
         progress = ((double)cur_batch / net->max_batches) * 100;
-        if (cur_batch % 10 == 0)
+        if (cur_batch % 1 == 0)
         { //print benchmark progress every 10 iters
             printf("Batch num: %ld, Seen: %.3f: Loss: %f, Avg loss: %f avg, L. rate: %f, Progress: %.2f%% \n",
                    cur_batch, (float)(*net->seen) / N, loss, avg_loss, get_current_rate(net), progress);
