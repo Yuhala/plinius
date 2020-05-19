@@ -76,8 +76,10 @@ void ecall_init(void *per_out, uint8_t *base_addr_out)
     CHECK_REF_POINTER(base_addr_out, sizeof(uint8_t));
     /**
      * load fence after pointer checks ensures the checks are done 
-     * before any assignment 
+     * before any assignment.
+     * Uncomment for real SGX hardware
      */
+    printf("here\n");
     sgx_lfence();
 
     base_addr_in = base_addr_out;
