@@ -123,11 +123,11 @@ void ecall_trainer(list *sections, data *training_data, int bsize, comm_info *in
      */
     sgx_lfence();
     //fill pmem data if absent
-    if (sections == NULL)
+    /* if (sections == NULL)
     {
         set_nv_data(training_data);
         return;
-    }
+    } */
 
     comm_in = info;
     //rm_nv_net();
