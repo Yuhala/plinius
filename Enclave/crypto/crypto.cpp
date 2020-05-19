@@ -4,21 +4,19 @@
  * Encrypt and Decrypt: AES-GCM and CTR modes with 128 bit keys
  */
 
-#include "sgx_trts.h"
-#include "sgx_tcrypto.h"
-#include <string.h>
-#include <stdlib.h>
 #include "crypto.h"
+#include "dnet_types.h"
 
 /**
  *  Galois Counter Mode encryption is used with 128bit key 
  *  GCM provides both confidentiality and integrity
  *  CTR does not provide integrity
  */
-static sgx_aes_gcm_128bit_key_t key = {0x76, 0x39, 0x79, 0x24, 0x42, 0x26, 0x45, 0x28, 0x48, 0x2b, 0x4d, 0x3b, 0x62, 0x51, 0x5e, 0x8f};
-
+//static sgx_aes_gcm_128bit_key_t key = {0x76, 0x39, 0x79, 0x24, 0x42, 0x26, 0x45, 0x28, 0x48, 0x2b, 0x4d, 0x3b, 0x62, 0x51, 0x5e, 0x8f};
+sgx_aes_gcm_128bit_key_t key;
 void encryptData(void *dataIn, size_t len, char *dataOut, size_t lenOut, AES_ALGO algo)
 {
+	memcpy(key, enc_key, 16);
 	uint8_t *clairText = (uint8_t *)dataIn;
 	uint8_t p_dst[BUFLEN] = {0};
 	const uint32_t num_inc_bits = 128;
@@ -64,6 +62,7 @@ void encryptData(void *dataIn, size_t len, char *dataOut, size_t lenOut, AES_ALG
 
 void decryptData(char *dataIn, size_t len, void *dataOut, size_t lenOut, AES_ALGO algo)
 {
+	memcpy(key, enc_key, 16);
 	uint8_t *cipherText = (uint8_t *)dataIn;
 	uint8_t p_dst[BUFLEN] = {0};
 	const uint32_t num_inc_bits = 128;

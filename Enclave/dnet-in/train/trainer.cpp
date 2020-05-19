@@ -13,7 +13,8 @@ NVData *pm_data = nullptr;
 data train;
 size_t batch_size = 0;
 int count;
-//enc_key = {0x76, 0x39, 0x79, 0x24, 0x42, 0x26, 0x45, 0x28, 0x48, 0x2b, 0x4d, 0x3b, 0x62, 0x51, 0x5e, 0x8f};
+//define enc_key; this will be provisioned via remote attestation
+unsigned char enc_key[16] = {0x76, 0x39, 0x79, 0x24, 0x42, 0x26, 0x45, 0x28, 0x48, 0x2b, 0x4d, 0x3b, 0x62, 0x51, 0x5e, 0x8f};
 
 //global network model
 network *net = nullptr;
@@ -164,8 +165,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
     {
         //mirror in and resume training
         nv_net->mirror_in(net, &avg_loss);
-        
-    }
+        }
 
     int epoch = (*net->seen) / N;
     count = 0;

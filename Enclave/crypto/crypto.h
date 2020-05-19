@@ -8,6 +8,11 @@
 #define CRYPTO_H
 
 #include "stdlib.h"
+#include "sgx_trts.h"
+#include "sgx_tcrypto.h"
+#include <string.h>
+#include <stdlib.h>
+
 
 #define BUFLEN 4 * 1024 * 1024 //1MB: increase this if you have to encrypt larger buffers
 #define SGX_AESGCM_MAC_SIZE 16   //128 bit mac

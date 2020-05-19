@@ -9,6 +9,9 @@
 
 //extern int gpu_index;
 
+//declare enc_key variable
+extern unsigned char enc_key[16];
+
 typedef struct
 {
     int classes;

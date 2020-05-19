@@ -28,6 +28,7 @@
 //#define DNET_SGX_DEBUG //uncomment if you need more verbose output during training/debugging
 //#define SGX_OMP //OMP not used yet 
 
+
 #define PRINT_BLOCK()                    \
     {                                    \
         char buf[BUFSIZ] = {'\0'};       \
@@ -42,6 +43,7 @@
     {                                                 \
         printf("########## DEBUG HERE ##########\n"); \
     }
+
 
 //ensure C linkage..
 #if defined(__cplusplus)
