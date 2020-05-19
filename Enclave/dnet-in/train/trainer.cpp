@@ -164,6 +164,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
     {
         //mirror in and resume training
         nv_net->mirror_in(net, &avg_loss);
+        
     }
 
     int epoch = (*net->seen) / N;
@@ -214,7 +215,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
         epoch = (*net->seen) / N;
 
         progress = ((double)cur_batch / net->max_batches) * 100;
-        if (cur_batch % 1 == 0)
+        if (cur_batch % 5 == 0)
         { //print benchmark progress every 10 iters
             printf("Batch num: %ld, Seen: %.3f: Loss: %f, Avg loss: %f avg, L. rate: %f, Progress: %.2f%% \n",
                    cur_batch, (float)(*net->seen) / N, loss, avg_loss, get_current_rate(net), progress);
