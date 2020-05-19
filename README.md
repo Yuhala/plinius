@@ -3,6 +3,7 @@
 - Plinius consists two main libradries: [sgx-romulus](https://github.com/anonymous-xh/sgx-romulus) which is an Intel SGX-compatible PM library we ported from Romulus PM library, and [sgx-dnet](https://github.com/anonymous-xh/sgx-dnet) which is a port of [Darknet](http://pjreddie.com/darknet) ML framework into Intel SGX.
 - This readme gives a quick rundown on how to test secure training in Plinius as described in our paper.
 - NB: Commands here are for linux-based systems 
+- Prerequisites: to build and run this project you must have atleast (simulation mode only) the [Intel SGX SDK](https://github.com/intel/linux-sgx) installed. 
 
 ## Training and testing a model in Plinius
 ### Intro
