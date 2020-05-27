@@ -28,6 +28,8 @@ size_t chunk_size;
 /* Benchmarking */
 #include "benchtools.h"
 #include <time.h>
+struct timespec start, stop;
+double diff;
 
 comm_info *comm_out;
 
@@ -44,19 +46,23 @@ comm_info *comm_out;
 #define MNIST_TEST_IMAGES "./App/dnet-out/data/mnist/t10k-images-idx3-ubyte"
 #define MNIST_TEST_LABELS "./App/dnet-out/data/mnist/t10k-labels-idx1-ubyte"
 
-
 #define MNIST_CFG "./App/dnet-out/cfg/mnist.cfg"
 #define MNIST_TRAIN_IMAGES "./App/dnet-out/data/mnist/enc_mnist_imgs.data"
 #define MNIST_TRAIN_LABELS "./App/dnet-out/data/mnist/enc_mnist_labels.data"
 
 /* For benchmarking */
+/**
+ * We can't measure time in the enclave runtime so we measure it with an ocall.
+ * The transition time is very small(~5ns) compared to the times we measure (ms,s,mins etc),
+ * so the values are accurate enough for our use cases
+ */
 void ocall_start_clock()
 {
-    //removed
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 }
 void ocall_stop_clock()
 {
-    //removed
+    clock_gettime(CLOCK_MONOTONIC_RAW, &stop);
 }
 
 void ocall_add_loss()
@@ -70,7 +76,7 @@ void data_malloc(size_t chunk)
     //removed
 }
 
-//This ocall reads encrypted mnist data from disk to DRAM 
+//This ocall reads encrypted mnist data from disk to DRAM
 void ocall_read_disk_chunk()
 {
 
@@ -118,7 +124,7 @@ void test_mnist(char *cfgfile)
 
     ecall_tester(global_eid, config_sections, &test, 0);
     printf("Mnist testing complete..\n");
-    free_data(test); 
+    free_data(test);
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -172,9 +178,16 @@ int SGX_CDECL main(int argc, char *argv[])
     char cfg[128] = MNIST_CFG;
 
     //train a model on mnist via the Plinius workflow
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     train_mnist(cfg);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &stop);
+    printf("Total training time: %f mins", time_diff(&start, &stop, SEC) / 60);
+
     //test the accuracy of the trained model
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     test_mnist(cfg);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &stop);
+    printf("Total inference time: %f mins", time_diff(&start, &stop, SEC) / 60);
 
     //Destroy enclave
     sgx_destroy_enclave(global_eid);
