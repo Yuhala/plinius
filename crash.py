@@ -47,7 +47,7 @@ with open(TRACES, 'r') as file:
 
 # set a max_bid price
 # max_bid = mean(prices)
-max_bid = 0.095500 # We chose a value a little higher than the median value = 0.094
+max_bid = 0.095500  # We chose a value a little higher than the median value = 0.094
 print("My max bid price: ", max_bid, "\n")
 
 # results list
@@ -82,7 +82,7 @@ def register_vals():
 # stop/resume training
 length = len(prices)
 running = False
-start = 0 
+start = 0
 num_stops = 0  # number of times the training process was stopped
 state = 0  # state of the training process: 1 = on ; 0 = off
 stop_index = []
@@ -102,7 +102,7 @@ while ((counter <= length) and (cur_iter < 500)):
                 state = 0
     else:
         print("Bid price greater than market price, running training process\n")
-        start += 1        
+        start += 1
         if (state == 0):
             subprocess.Popen([BINPATH + PROCNAME])
             # start += 1
@@ -111,8 +111,8 @@ while ((counter <= length) and (cur_iter < 500)):
 
     # sleep for spot update period
     time.sleep(UPDATE_FREQ/1000.)
-    #time.sleep(TEST/1000.)
-    if(start > 1): # prevents reading from an empty file
+    # time.sleep(TEST/1000.)
+    if(start > 1):  # prevents reading from an empty file
         loss = get_loss()
     else:
          # training has not begun yet so loss is actually undefined but we leave it at MAX_LOSS
@@ -129,6 +129,8 @@ while ((counter <= length) and (cur_iter < 500)):
         cur_iter = 0
 
     print("\nCurrent iteration: ", cur_iter, "Counter: ", counter)
-    
 
+# Add last point after training completes
+results = [counter*5, 0, loss]
+register_vals()
 print("Crash iters: ", stop_index)
