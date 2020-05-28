@@ -24,7 +24,7 @@
 
 ### Training the model
 - As described in the paper, we first initialize sgx-rom in the main routine via `rom_init` and `ecall_init` and invoke the `train_mnist` function.
-- `train_mnist` reads the corresponding network/model configuration file and parses it into a config data structure and sends this to the enclave runtime via the `ecall_trainer` ecall. The config file describes a model with 4 RELU layers + other intermediary layers, batch size of 128, learning rate of 0.1 and other important hyperparameters. Feel free to modify the config as it suits you, but make sure to follow the correct syntax (i.e Darknet config file syntax).
+- `train_mnist` reads the corresponding network/model configuration file and parses it into a config data structure and sends this to the enclave runtime via the `ecall_trainer` ecall. The config file used in this [example](App/dnet-out/cfg/mnist.cfg) describes a model with 12 LRELU convolutional layers + other intermediary pooling layers, batch size of 128, learning rate of 0.1 and other important hyperparameters. Feel free to modify the config as it suits you, but make sure to follow the correct syntax (i.e Darknet config file syntax).
 - In the enclave we load the encrypted data once into PM and begin the training iterations. 
 - For each iteration, the routine reads batches of encrypted data from PM, decrypts the former in the enclave, trains the model with the batch, and the mirrors-out weights to PM.
 ### Running the program
@@ -34,6 +34,6 @@
 - The encrypted data will be read once into PM and training will begin. You can see the loss/average loss decreasing as training proceeds.
 - To test the fault tolerance capabilities, interrupt the program with a `ctrl+c` and restart it again. Upon restart, training data is already in PM and training resumes from the iteration it left off.
 - After training, the program will invoke `test_mnist` to test the accuracy of the trained model.
-- The above model config yields 94.7% accuracy on the 10k test set for 1 training epoch(500 iterations). A much larger accuracy can be obtained with a well tweaked model configuration.
+- The above model config yields 98.5% accuracy on the 10k test set for 1 training epoch(500 iterations). We can achieve higher accuracy by modifying the network structure and learning hyperparameters.
 
 - Have fun !!!
