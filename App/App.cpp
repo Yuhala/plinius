@@ -67,7 +67,8 @@ void ocall_stop_clock()
 
 void ocall_add_loss()
 {
-    //removed
+    //you can use this routine to register the loss and iteration during training in a file
+    //update the loss in the enclave in comm_in->loss and the iteration in comm_in->epoch
 }
 
 //alloc space for mnist training data variable
@@ -181,13 +182,13 @@ int SGX_CDECL main(int argc, char *argv[])
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     train_mnist(cfg);
     clock_gettime(CLOCK_MONOTONIC_RAW, &stop);
-    printf("Total training time: %f mins", time_diff(&start, &stop, SEC) / 60);
+    printf("Total training time: %f mins\n", time_diff(&start, &stop, SEC) / 60);
 
     //test the accuracy of the trained model
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     test_mnist(cfg);
     clock_gettime(CLOCK_MONOTONIC_RAW, &stop);
-    printf("Total inference time: %f mins", time_diff(&start, &stop, SEC) / 60);
+    printf("Total inference time: %f mins\n", time_diff(&start, &stop, SEC) / 60);
 
     //Destroy enclave
     sgx_destroy_enclave(global_eid);

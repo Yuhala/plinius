@@ -15,7 +15,7 @@ from statistics import mean
 from random import randint
 
 # NB: test with more crashes; the more the better
-PROCNAME = "app"
+PROCNAME = "app-plinius"
 BINPATH = "./"
 LOSS = BINPATH + "results/loss.csv"
 TRACES = BINPATH + "traces/price_time_c3.2xlarge.csv"
