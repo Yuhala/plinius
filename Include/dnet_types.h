@@ -579,6 +579,7 @@ typedef struct
     int sup; //sup approach
     int chkpt; //normal checkpointing
     data* data_chunk;//address of training data chunk read from disk
+    list *config;
 
 } comm_info;
 

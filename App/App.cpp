@@ -101,7 +101,8 @@ void train_mnist(char *cfgfile)
 
     list *config_sections = read_cfg(cfgfile);
     comm_out = (comm_info *)malloc(sizeof(comm_info));
-    ecall_trainer(global_eid, config_sections, &training_data, chunk_size, comm_out);
+    comm_out->config = config_sections;
+    ecall_trainer(global_eid,comm_out->config, &training_data, chunk_size, comm_out);
     printf("Mnist training complete..\n");
     free_data(training_data);
 }
