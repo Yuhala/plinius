@@ -1,0 +1,8 @@
+To split a file do:
+
+split --bytes=512M bigfile prefix
+# change the size to the corresponding part size
+
+To join the chunks into the original file do:
+
+cat prefix* > bigfile
