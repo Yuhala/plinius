@@ -5,6 +5,7 @@
 - NB: Commands here are for linux-based systems 
 - Prerequisites: to build and run this project you must have atleast (simulation mode only) the [Intel SGX SDK](https://github.com/intel/linux-sgx) installed. 
 
+
 ## Training and testing a model in Plinius
 ### Intro
 - As described in the paper, training a model in Plinius is summarized in the workflow below:
@@ -18,12 +19,27 @@
 - `t10k-images*` and `t10k-labels*` represent the images and labels in the default MNIST test dataset.
 - For clearer comprehension, the encrypted image and label files have the form below:
 ![enc_dataset](imgs/enc_mnist.png)
-- We use a file on ramdisk i.e `/dev/shm/plinius_data` to emulate PM. If you have a real PM device modify that path in the file: [Romulus_helper.h](App/Romulus_helper.h). For example: `/mnt/pmem0/plinius_data`
+
+## Setting up persistent memory
+- If you have a machine with real persistent memory, use the following commands to format and mount the drive with DAX enabled. We assume the PM device is `/dev/pmem0`.
+```
+$ sudo mkdir /mnt/pmem0
+$ sudo mkfs.ext4 /dev/pmem0
+$ sudo mount -t ext4 -o dax /dev/pmem0 /mnt/pmem0
+
+```
+- If you do not have real PM, you can emulate it with DRAM (ramdisk), using a temporary filesystem (i.e `tmpfs`) using the following instructions.
+```
+$ sudo mkdir /mnt/pmem0
+$ sudo mount -t tmpfs /dev/pmem0 /mnt/pmem0
+
+```
+- All plinius data will then be stored in `/mnt/pmem0/plinius_data`. Modify this path if needed in the file: [Romulus_helper.h](App/Romulus_helper.h). 
+
+### Training the model
 - Plinius is mainly designed for model training but we can do inference too. We added the default mnist test set (10k unencrypted labeled images) just for the purpose of testing the accuracy of our trained model. 
 - In a real setting a programmer who wishes to do inference with Plinius will have to encrypt his inference set and load to PM following the same idea/workflow.
 - We used mnist data set as a proof of concept, the same idea can be applied with a different data set once the workflow is understood.
-
-### Training the model
 - As described in the paper, we first initialize sgx-rom in the main routine via `rom_init` and `ecall_init` and invoke the `train_mnist` function.
 - `train_mnist` reads the corresponding network/model configuration file and parses it into a config data structure and sends this to the enclave runtime via the `ecall_trainer` ecall. The config file used in this [example](App/dnet-out/cfg/mnist.cfg) describes a model with 12 LRELU convolutional layers + other intermediary pooling layers, batch size of 128, learning rate of 0.1 and other important hyperparameters. Feel free to modify the config as it suits you, but make sure to follow the correct syntax (i.e Darknet config file syntax).
 - In the enclave we load the encrypted data once into PM and begin the training iterations. 

@@ -19,7 +19,7 @@
 
 #include "rom_types.h" //persistent header
 
-#define MMAP_FILENAME "/dev/shm/plinius_data"
+#define MMAP_FILENAME "/mnt/pmem0/plinius_data"
 #define MAX_SIZE 400 * 1024 * 1024 //400mb
 #define MAGIC_ID 0x1337BAB2
 
