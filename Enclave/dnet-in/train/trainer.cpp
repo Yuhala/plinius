@@ -165,7 +165,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
     {
         //mirror in and resume training
         nv_net->mirror_in(net, &avg_loss);
-        }
+    }
 
     int epoch = (*net->seen) / N;
     count = 0;
@@ -206,12 +206,12 @@ void train_mnist(list *sections, data *training_data, int pmem)
         //one training iteration
         loss = train_network_sgd(net, train, 1);
 
-        if (avg_loss == -1)
+        if (avg_loss < 0)
         {
             avg_loss = loss;
         }
 
-        avg_loss = avg_loss * .95 + loss * .05;
+        avg_loss = avg_loss * .9 + loss * .1;
         epoch = (*net->seen) / N;
 
         progress = ((double)cur_batch / net->max_batches) * 100;
