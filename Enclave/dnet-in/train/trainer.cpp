@@ -5,6 +5,7 @@
 #include "mirroring/dnet_mirror.h"
 #include "mirroring/nvdata.h"
 #include "checks.h"
+#include "plinius_common.h"
 
 #define NUM_ITERATIONS 10
 
@@ -145,8 +146,8 @@ void ecall_trainer(list *sections, data *training_data, int bsize, comm_info *in
 
 void train_mnist(list *sections, data *training_data, int pmem)
 {
-    //TODO: commer checks
-    printf("Training mnist in enclave..\n");
+
+    PLINIUS_INFO("------Training mnist in enclave..----------\n");
 
     srand(12345);
     float avg_loss = 0;
@@ -221,7 +222,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
         if (cur_batch % LOG_FREQ == 0)
         { //print benchmark progress every 10 iters
             printf("Batch num: %ld, Avg loss: %f avg, L. rate: %f, Progress: %.2f%% \n",
-                   cur_batch, (float)(*net->seen) / N, loss, avg_loss, get_current_rate(net), progress);
+                   cur_batch, avg_loss, get_current_rate(net), progress);
         }
 
         //mirror model out to PM
