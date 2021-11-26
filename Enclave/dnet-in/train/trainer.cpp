@@ -178,7 +178,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
 
     PLINIUS_INFO("Max batches: %d\n", net->max_batches);
     PLINIUS_INFO("Net batch size: %d\n", net->batch);
-    PLINIUS_INFO("Number of params: %d\n Model size: %f MB \n", num_params, comm_in->model_size);
+    PLINIUS_INFO("Number of params: %d  Model size: %f MB \n", num_params, comm_in->model_size);
 
     //set batch size
     batch_size = net->batch;
@@ -220,7 +220,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
 
         progress = ((double)cur_batch / net->max_batches) * 100;
         if (cur_batch % LOG_FREQ == 0)
-        { //print benchmark progress every 10 iters
+        { //print benchmark progress every LOG_FREQ iters
             PLINIUS_INFO("Batch num: %ld, Avg loss: %f avg, L. rate: %f, Progress: %.2f%% \n",
                          cur_batch, avg_loss, get_current_rate(net), progress);
         }
