@@ -177,8 +177,8 @@ void train_mnist(list *sections, data *training_data, int pmem)
     comm_in->model_size = (double)(num_params * 4) / (1024 * 1024);
 
     PLINIUS_INFO("Max batches: %d\n", net->max_batches);
-    printf("Net batch size: %d\n", net->batch);
-    printf("Number of params: %d Model size: %f\n", num_params, comm_in->model_size);
+    PLINIUS_INFO("Net batch size: %d\n", net->batch);
+    PLINIUS_INFO("Number of params: %d Model size: %f\n", num_params, comm_in->model_size);
 
     //set batch size
     batch_size = net->batch;
@@ -221,15 +221,15 @@ void train_mnist(list *sections, data *training_data, int pmem)
         progress = ((double)cur_batch / net->max_batches) * 100;
         if (cur_batch % LOG_FREQ == 0)
         { //print benchmark progress every 10 iters
-            printf("Batch num: %ld, Avg loss: %f avg, L. rate: %f, Progress: %.2f%% \n",
-                   cur_batch, avg_loss, get_current_rate(net), progress);
+            PLINIUS_INFO("Batch num: %ld, Avg loss: %f avg, L. rate: %f, Progress: %.2f%% \n",
+                         cur_batch, avg_loss, get_current_rate(net), progress);
         }
 
         //mirror model out to PM
         nv_net->mirror_out(net, &avg_loss);
     }
 
-    printf("Done training mnist network..\n");
+    PLINIUS_INFO("Done training mnist network..\n");
     free_network(net);
 }
 
@@ -278,23 +278,23 @@ void test_mnist(list *sections, data *test_data, int pmem)
     if (nv_net != nullptr)
     {
         nv_net->mirror_in(net, &avg_loss);
-        printf("Mirrored net in for testing\n");
+        PLINIUS_INFO("Mirrored net in for testing\n");
     }
 
     if (net == NULL)
     {
-        printf("No neural network in enclave..\n");
+        PLINIUS_INFO("No neural network in enclave..\n");
         return;
     }
     srand(12345);
 
-    printf("-----Beginning mnist testing----\n");
+    PLINIUS_INFO("-----Beginning mnist testing----\n");
     float avg_acc = 0;
     data test = *test_data;
     float *acc = network_accuracies(net, test, 2);
     avg_acc += acc[0];
 
-    printf("Accuracy: %f%%, %d images\n", avg_acc * 100, test.X.rows);
+    PLINIUS_INFO("Accuracy: %f%%, %d images\n", avg_acc * 100, test.X.rows);
     free_network(net);
 
     /**
