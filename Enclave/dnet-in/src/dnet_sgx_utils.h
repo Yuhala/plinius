@@ -41,7 +41,7 @@
 
 #define DEBUG_PRINT()                                 \
     {                                                 \
-        //printf("########## DEBUG HERE ##########\n"); \
+        printf("\n"); \
     }
 
 

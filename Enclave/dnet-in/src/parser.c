@@ -848,16 +848,10 @@ network *create_net_in(list *sections)
     int count = 0;
     ocall_free_sec(s);
 
-#ifdef DNET_SGX_DEBUG
-    printf("layer     filters    size              input                output\n");
-#endif
-
     while (n)
     {
         params.index = count;
-#ifdef DNET_SGX_DEBUG
-        printf("%5d ", count);
-#endif
+
         s = (section *)n->val;
         options = s->options;
         layer l = {0};
@@ -976,9 +970,6 @@ network *create_net_in(list *sections)
         }
         else
         {
-#ifdef DNET_SGX_DEBUG
-            printf("Type not recognized: %s\n", s->type);
-#endif
         }
 
         l.clip = net->clip;
@@ -1007,7 +998,7 @@ network *create_net_in(list *sections)
         }
     }
 
-    DEBUG_PRINT();
+   
     ocall_free_list(sections);
     layer out = get_network_output_layer(net);
     net->outputs = out.outputs;
