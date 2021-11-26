@@ -178,7 +178,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
 
     PLINIUS_INFO("Max batches: %d\n", net->max_batches);
     PLINIUS_INFO("Net batch size: %d\n", net->batch);
-    PLINIUS_INFO("Number of params: %d Model size: %f\n", num_params, comm_in->model_size);
+    PLINIUS_INFO("Number of params: %d\n Model size: %f MB \n", num_params, comm_in->model_size);
 
     //set batch size
     batch_size = net->batch;
