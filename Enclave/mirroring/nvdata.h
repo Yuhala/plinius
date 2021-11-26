@@ -1,3 +1,10 @@
+
+/*
+ * Created on Tue Apr 14 2020
+ *
+ * Copyright (c) 2020 xxxx xxxx, xxxx
+ */
+
 #ifndef NVDATA_H
 #define NVDATA_H
 #define ROMULUS_LOG_PTM //for romulus persistent types
@@ -50,7 +57,7 @@ public:
     void alloc();
     void fill_pm_data(data *ptr);
     void shallow_copy_data(data *ptr);
-    void deep_copy_data(data *ptr,size_t chunk);
+    void deep_copy_data(data *ptr, size_t chunk);
 };
 
 #endif /* NVDATA_H */

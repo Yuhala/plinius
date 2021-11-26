@@ -8,11 +8,14 @@
 
 #define NUM_ITERATIONS 10
 
+#define LOG_FREQ 1
+
 comm_info *comm_in = nullptr;
 NVData *pm_data = nullptr;
 data train;
 size_t batch_size = 0;
 int count;
+
 //define enc_key; this will be provisioned via remote attestation
 unsigned char enc_key[16] = {0x76, 0x39, 0x79, 0x24, 0x42, 0x26, 0x45, 0x28, 0x48, 0x2b, 0x4d, 0x3b, 0x62, 0x51, 0x5e, 0x8f};
 
@@ -21,7 +24,7 @@ network *net = nullptr;
 NVModel *nv_net = nullptr;
 
 /**
- * Pxxxx
+ * Peterson Yuhala
  * The network training avg accuracy should decrease
  * as the network learns
  * Batch size: the number of data samples read for one training epoch/iteration
@@ -105,7 +108,7 @@ void get_pm_batch()
         abort(); //abort training
     }
 
-    if (count % 5 == 0)
+    if (count % LOG_FREQ == 0)
     {
         //print this every 10 iters
         printf("Reading and decrypting batch of: %d from PM\n", batch_size);
@@ -215,9 +218,9 @@ void train_mnist(list *sections, data *training_data, int pmem)
         epoch = (*net->seen) / N;
 
         progress = ((double)cur_batch / net->max_batches) * 100;
-        if (cur_batch % 5 == 0)
+        if (cur_batch % LOG_FREQ == 0)
         { //print benchmark progress every 10 iters
-            printf("Batch num: %ld, Seen: %.3f: Loss: %f, Avg loss: %f avg, L. rate: %f, Progress: %.2f%% \n",
+            printf("Batch num: %ld, Avg loss: %f avg, L. rate: %f, Progress: %.2f%% \n",
                    cur_batch, (float)(*net->seen) / N, loss, avg_loss, get_current_rate(net), progress);
         }
 

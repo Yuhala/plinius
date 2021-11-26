@@ -17,6 +17,7 @@
 #include <unistd.h>
 
 //#define PWB_IS_CLFLUSHOPT
+
 #define PWB_IS_CLFLUSH
 #define CL_SIZE 64 // Size of one CPU cache line
 #define FLUSH_ALIGN ((uintptr_t)64)

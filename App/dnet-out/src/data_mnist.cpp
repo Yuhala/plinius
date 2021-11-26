@@ -20,7 +20,7 @@ uint32_t swap_bytes(uint32_t val)
 }
 
 /**
- * Author: Pxxxx
+ * Author: Peterson Yuhala
  * Mnist metadata:
  * There 4 files after decompressing are: 
  * train-images-idx3-ubyte: training set images (45MB)
@@ -137,7 +137,7 @@ matrix load_mnist_labels(std::string path, size_t chunk_size)
      */
 
     /**
-     * Pxxxx
+     * Peterson Yuhala
      * 1 byte (sizeof char) is enough to store numbers from 0 to 9
      */
     char label_class;

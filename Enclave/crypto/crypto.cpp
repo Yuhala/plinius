@@ -97,7 +97,7 @@ void decryptData(char *dataIn, size_t len, void *dataOut, size_t lenOut, AES_ALG
 }
 
 /**
- * Author: Pxxxx
+ * Author: Peterson Yuhala
  * Flags: ENCRYPT, DECRYPT, DEFAULT
  * ENCRYPT: encrypt src and copy result to dest
  * DECRYPT: decrypt src and copy result to dest

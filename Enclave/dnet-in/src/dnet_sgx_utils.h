@@ -5,7 +5,7 @@
 
 //At the time of this porting Intel SGX does not support CUDA
 //Therefore all GPU related functionality has been stripped off
-//Pxxxx Feb 2020
+//Peterson Yuhala Feb 2020
 
 #ifndef DNET_SGX_UTILS_H
 #define DNET_SGX_UTILS_H

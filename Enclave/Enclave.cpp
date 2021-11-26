@@ -1,6 +1,6 @@
 /**
- * Author: xxx xxxx
- * sgx-dnet-romulus: machine learning implementation of our mirroring mechanism
+ * Author: Peterson Yuhala
+ * sgx-dnet-romulus/plinius: ML implem of our mirroring mechanism
  * using sgx-dnet and sgx-romulus
  */
 
@@ -14,6 +14,8 @@
 //#include <thread>
 #include "romulus/datastructures/TMStack.hpp"
 
+//#define PLINIUS_DEBUG
+
 //romAttrib *romAttrib_out; //contains marshalled properties of outside romulus object
 uint8_t *base_addr_in = NULL; //this will receive the value of the
 
@@ -26,7 +28,9 @@ void printf(const char *fmt, ...)
 
 void sgx_printf(const char *fmt, ...)
 {
+#ifdef PLINIUS_DEBUG
     PRINT_BLOCK();
+#endif
 }
 
 void fread(void *ptr, size_t size, size_t nmemb, int fp)
@@ -121,27 +125,30 @@ void do_work(int val, size_t tid)
 {
 
     //Pops a value from the persistent stack
-    TM_WRITE_TRANSACTION([&]() {
-        PStack *pstack = RomulusLog::get_object<PStack>(0);
-        // sgx_printf("Popped two items: %ld and %ld\n", pstack->pop(), pstack->pop());
-        // This one should be "EMTPY" which is 999999999
-        sgx_printf("Worker: %d Popped : %ld\n", tid, pstack->pop());
-    });
+    TM_WRITE_TRANSACTION([&]()
+                         {
+                             PStack *pstack = RomulusLog::get_object<PStack>(0);
+                             // sgx_printf("Popped two items: %ld and %ld\n", pstack->pop(), pstack->pop());
+                             // This one should be "EMTPY" which is 999999999
+                             sgx_printf("Worker: %d Popped : %ld\n", tid, pstack->pop());
+                         });
 
     // Add items to the persistent stack
-    TM_WRITE_TRANSACTION([&]() {
-        PStack *pstack = RomulusLog::get_object<PStack>(0);
-        pstack->push(val);
-        //pstack->push(44);
-    });
+    TM_WRITE_TRANSACTION([&]()
+                         {
+                             PStack *pstack = RomulusLog::get_object<PStack>(0);
+                             pstack->push(val);
+                             //pstack->push(44);
+                         });
 
     // Pop two items from the persistent stack
-    TM_WRITE_TRANSACTION([&]() {
-        PStack *pstack = RomulusLog::get_object<PStack>(0);
-        // sgx_printf("Popped two items: %ld and %ld\n", pstack->pop(), pstack->pop());
-        // This one should be "EMTPY" which is 999999999
-        sgx_printf("Worker: %d Pushed and Popped : %ld\n", tid, pstack->pop());
-    });
+    TM_WRITE_TRANSACTION([&]()
+                         {
+                             PStack *pstack = RomulusLog::get_object<PStack>(0);
+                             // sgx_printf("Popped two items: %ld and %ld\n", pstack->pop(), pstack->pop());
+                             // This one should be "EMTPY" which is 999999999
+                             sgx_printf("Worker: %d Pushed and Popped : %ld\n", tid, pstack->pop());
+                         });
 
     // Delete the persistent stack from persistent memory
     /*TM_WRITE_TRANSACTION([&]() {
