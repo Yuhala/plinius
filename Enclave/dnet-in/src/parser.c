@@ -815,7 +815,10 @@ network *create_net_in(list *sections)
     //list *sections = read_cfg(filename);
     node *n = sections->front;
     if (!n)
+    {
         error("Config file has no sections");
+    }
+
     network *net = make_network(sections->size - 1);
 
     net->gpu_index = gpu_index;
@@ -826,7 +829,9 @@ network *create_net_in(list *sections)
 
     //printf("Option size: %d\n",options->size);
     if (!is_network(s))
+    {
         error("First section must be [net] or [network]");
+    }
 
     parse_net_options(options, net); //SGX OK
 

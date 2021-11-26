@@ -17,9 +17,9 @@
         printf("Plinius: %s:%s:%s\n", _PLINIUS_CODELINE_); \
     } while (0)
 
-#define PLINIUS_INFO(x) \
-    do                  \
-    {                   \
-        printf x;      \
+#define PLINIUS_INFO(msg) \
+    do                    \
+    {                     \
+        printf(msg);      \
     } while (0)
 #endif /* PLINIUS_COMMON_H */

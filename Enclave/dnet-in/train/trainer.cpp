@@ -147,7 +147,7 @@ void ecall_trainer(list *sections, data *training_data, int bsize, comm_info *in
 void train_mnist(list *sections, data *training_data, int pmem)
 {
 
-    PLINIUS_INFO("------Training mnist in enclave..----------\n");
+    //PLINIUS_INFO("------Training mnist in enclave..----------\n");
 
     srand(12345);
     float avg_loss = 0;
