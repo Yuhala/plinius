@@ -176,7 +176,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
     num_params = get_param_size(net);
     comm_in->model_size = (double)(num_params * 4) / (1024 * 1024);
 
-    printf("Max batches: %d\n", net->max_batches);
+    PLINIUS_INFO("Max batches: %d\n", net->max_batches);
     printf("Net batch size: %d\n", net->batch);
     printf("Number of params: %d Model size: %f\n", num_params, comm_in->model_size);
 
