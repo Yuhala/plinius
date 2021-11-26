@@ -294,7 +294,7 @@ void test_mnist(list *sections, data *test_data, int pmem)
     float *acc = network_accuracies(net, test, 2);
     avg_acc += acc[0];
 
-    PLINIUS_INFO("Accuracy: %f%%, %d images\n", avg_acc * 100, test.X.rows);
+    printf("Accuracy: %f%%, %d images\n", avg_acc * 100, test.X.rows);
     free_network(net);
 
     /**
