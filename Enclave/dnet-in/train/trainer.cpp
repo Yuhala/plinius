@@ -182,10 +182,22 @@ void train_mnist(list *sections, data *training_data, int pmem)
 
     //set batch size
     batch_size = net->batch;
-    //allocate training data
-    train = data_alloc(batch_size);
-    //load data from disk to PM
-    load_pm_data();
+
+    /**
+     * Check if training is complete
+     */
+    if ((cur_batch < net->max_batches || net->max_batches == 0))
+    {
+        goto training_done;
+    }
+    else
+    {
+        //allocate training data
+        train = data_alloc(batch_size);
+        //load data from disk to PM
+        load_pm_data();
+    }
+
     //you can reduce the number of iters to a smaller num just for testing purposes
     //net->max_batches = 10;
 
@@ -228,6 +240,8 @@ void train_mnist(list *sections, data *training_data, int pmem)
         //mirror model out to PM
         nv_net->mirror_out(net, &avg_loss);
     }
+
+training_done:
 
     PLINIUS_INFO("Done training mnist network..\n");
     free_network(net);

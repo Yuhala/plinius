@@ -13,6 +13,8 @@
 /* For romulus */
 #define MAX_PATH FILENAME_MAX
 
+#define PLINIUS_TEST_SIZE 1000
+
 /* Global EID shared by multiple threads */
 sgx_enclave_id_t global_eid = 0;
 
@@ -77,7 +79,9 @@ void data_malloc(size_t chunk)
     //removed
 }
 
-//This ocall reads encrypted mnist data from disk to DRAM
+/**
+ * This ocall reads encrypted mnist data from disk to DRAM
+ */
 void ocall_read_disk_chunk()
 {
 
@@ -96,13 +100,16 @@ void ocall_read_disk_chunk()
     //ecall_set_data(global_eid, &training_data);
 }
 
+/**
+ * Trains mnist in the enclave
+ */
 void train_mnist(char *cfgfile)
 {
 
     list *config_sections = read_cfg(cfgfile);
     comm_out = (comm_info *)malloc(sizeof(comm_info));
     comm_out->config = config_sections;
-    ecall_trainer(global_eid,comm_out->config, &training_data, chunk_size, comm_out);
+    ecall_trainer(global_eid, comm_out->config, &training_data, chunk_size, comm_out);
     printf("Mnist training complete..\n");
     free_data(training_data);
 }
@@ -120,8 +127,8 @@ void test_mnist(char *cfgfile)
 
     std::string img_path = MNIST_TEST_IMAGES;
     std::string label_path = MNIST_TEST_LABELS;
-    data test = load_mnist_images(img_path, 10000);
-    test.y = load_mnist_labels(label_path, 10000);
+    data test = load_mnist_images(img_path, PLINIUS_TEST_SIZE);
+    test.y = load_mnist_labels(label_path, PLINIUS_TEST_SIZE);
     list *config_sections = read_cfg(cfgfile);
 
     ecall_tester(global_eid, config_sections, &test, 0);
