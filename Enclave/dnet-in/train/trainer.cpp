@@ -186,7 +186,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
     /**
      * Check if training is complete
      */
-    if ((cur_batch < net->max_batches || net->max_batches == 0))
+    if (!(cur_batch < net->max_batches || net->max_batches == 0))
     {
         goto training_done;
     }
