@@ -175,7 +175,7 @@ int SGX_CDECL main(int argc, char *argv[])
     /* Initialize the enclave */
     if (initialize_enclave() < 0)
     {
-        printf("Enter a character before exit ...\n");
+        printf("Failed to initialize enclave. Enter a character before exit ...\n");
         getchar();
         return -1;
     }
@@ -184,8 +184,9 @@ int SGX_CDECL main(int argc, char *argv[])
     printf("Base addr is : %p\n", base_addr);
     ecall_init(global_eid, (void *)per_out, base_addr);
 
-    //mnist model config file
-    char cfg[128] = MNIST_CFG;
+    //model config file
+    //char cfg[128] = MNIST_CFG;
+    char cfg[128] = CUSO_MNIST_CFG;
 
     //train a model on mnist via the Plinius workflow
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
