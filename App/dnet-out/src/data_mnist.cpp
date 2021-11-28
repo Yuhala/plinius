@@ -54,7 +54,7 @@ data load_mnist_images(std::string path, size_t chunk_size)
         ERROR(); */
     file.read(reinterpret_cast<char *>(&magic_num), sizeof(magic_num));
     magic_num = swap_bytes(magic_num);
-    printf("magic num is: %d\n", magic_num);
+    //printf("magic num is: %d\n", magic_num);
 
     if (magic_num != 2051)
         throw std::runtime_error("Invalid MNIST image file!");
@@ -67,7 +67,7 @@ data load_mnist_images(std::string path, size_t chunk_size)
     cols = swap_bytes(cols);
     image_size = rows * cols;
 
-    printf("num images: %d\nimg rows: %d\nimg cols: %d\nimg size: %d\n", num_images, rows, cols, image_size);
+    //printf("num images: %d\nimg rows: %d\nimg cols: %d\nimg size: %d\n", num_images, rows, cols, image_size);
     //create data matrices
     data d = {0};
     d.shallow = 0;
@@ -171,7 +171,6 @@ data load_enc_mnist_images(std::string path, size_t chunk_size)
     uint32_t cols = 0;
     uint32_t image_size = 0;
 
-   
     file.read((char *)&rows, sizeof(rows));
     //rows = swap_bytes(rows);
     file.read((char *)&cols, sizeof(cols));
@@ -184,7 +183,7 @@ data load_enc_mnist_images(std::string path, size_t chunk_size)
     data d = {0};
     d.shallow = 0;
     matrix X = make_enc_matrix(chunk_size, image_size, AED); //images
-    
+
     if (chunk_size > num_images)
     {
         printf("chunk_size > num_images\n");
@@ -197,9 +196,8 @@ data load_enc_mnist_images(std::string path, size_t chunk_size)
 
         file.read(temp, size);
         memcpy(X.vals[i], temp, size);
-        
     }
-   
+
     d.X = X;
     //scale_data_rows(d, 1. / 255);
     //print_matrix(X);
@@ -216,13 +214,13 @@ matrix load_enc_mnist_labels(std::string path, size_t chunk_size)
     //static size_t chunk_read = 0;
 
     //uint32_t magic_num = 0;
-    uint32_t num_labels = 0;  
+    uint32_t num_labels = 0;
 
     file.read((char *)&num_labels, sizeof(num_labels));
     //num_labels = swap_bytes(num_labels);
     printf("num labels: %d\n", num_labels);
     matrix Y = make_enc_matrix(chunk_size, NUM_CLASSES, AED); //labels
-   
+
     char label_class;
     if (chunk_size > num_labels)
     {
@@ -236,7 +234,6 @@ matrix load_enc_mnist_labels(std::string path, size_t chunk_size)
 
         file.read(temp, size);
         memcpy(Y.vals[i], temp, size);
-        
     }
 
     //print_matrix(Y);

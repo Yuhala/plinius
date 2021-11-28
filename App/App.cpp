@@ -13,7 +13,7 @@
 /* For romulus */
 #define MAX_PATH FILENAME_MAX
 
-#define PLINIUS_TEST_SIZE 1000
+#define PLINIUS_TEST_SIZE 2
 
 /* Global EID shared by multiple threads */
 sgx_enclave_id_t global_eid = 0;
