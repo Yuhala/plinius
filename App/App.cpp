@@ -49,6 +49,7 @@ comm_info *comm_out;
 #define MNIST_TEST_LABELS "./App/dnet-out/data/mnist/t10k-labels-idx1-ubyte"
 
 #define MNIST_CFG "./App/dnet-out/cfg/mnist.cfg"
+#define CUSO_MNIST_CFG "./App/dnet-out/cfg/cuso.cfg"
 #define MNIST_TRAIN_IMAGES "./App/dnet-out/data/mnist/enc_mnist_imgs.data"
 #define MNIST_TRAIN_LABELS "./App/dnet-out/data/mnist/enc_mnist_labels.data"
 

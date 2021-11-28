@@ -10,6 +10,7 @@
 //#include <fcntl.h> header for file control
 //#include <pthread.h> thread managment
 //#include "stdatomic.h"
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>

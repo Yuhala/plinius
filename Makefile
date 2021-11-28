@@ -1,6 +1,6 @@
 #
-# Author: xxx xxxx
-# Copyright (C) 2020 xxxx. All rights reserved. 
+# Author: Peterson Yuhala
+# Copyright (C) 2020 IIUN. All rights reserved. 
 #
 
 ######## SGX SDK Settings ########
