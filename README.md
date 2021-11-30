@@ -1,26 +1,21 @@
+# Plinius Tutorial
 ## Summary
 - `Plinius` is a secure machine learning framework which leverages `Intel SGX` for secure training of neural network models, and `persistent memory` (PM) for fault tolerance.
 - Plinius consists of two main libraries: [sgx-romulus](https://github.com/anonymous-xh/sgx-romulus) which is an Intel SGX-compatible PM library we ported from Romulus PM library, and [sgx-dnet](https://github.com/anonymous-xh/sgx-dnet) which is a port of [Darknet](http://pjreddie.com/darknet) ML framework into Intel SGX.
-- This readme gives a quick rundown on how to test secure training in Plinius as described in our paper.
-- NB: Commands here are for linux-based systems 
-- Prerequisites: to build and run this project you must have atleast (simulation mode only) the [Intel SGX SDK](https://github.com/intel/linux-sgx) installed. 
+- NB: the below instructions are for a Linux-based system (Tested on Ubuntu 18.04).
+
+## Prerequisites
+- To build and run Plinius, you must have atleast (simulation mode only) the [Intel SGX SDK](https://github.com/intel/linux-sgx) and [Intel SGX PSW](https://github.com/intel/linux-sgx) installed. 
+- If your CPU supports SGX, you can additionally install the [Intel SGX driver](). Otherwise you can run SGX in `simulation mode` (not real SGX).
 
 
-## Training and testing a model in Plinius
-### Intro
-- As described in the paper, training a model in Plinius is summarized in the workflow below:
-![workflow](imgs/workflow.png)
-- For the sake of simplicity we assume RA and SC have been done successfully and the encryption key has been provisioned to the enclave.i.e `enc_key` variable in [trainer.cpp](Enclave/dnet-in/train/trainer.cpp). This is the same key used for encrypting the mnist data set.
-- We created an encrypted version of the MNIST data set, located in the `App/dnet-out/data/mnist` folder.
-- The encrypted images are divided into four chunks: `img.a-e`. 
-- Combine the images into one file with the command: `cat img.?? > enc_mnist_imgs.data`
-- `enc_mnist_imgs.data` contains 60k encrypted mnist images and `enc_mnist_labels.data` contains 60k corresponding encrypted labels.
-- The images and labels are encrypted with AES-GCM encryption algorithm, with a 16 byte MAC and 12 byte IV attached to each encrypted element (e.g. image or label).
-- `t10k-images*` and `t10k-labels*` represent the images and labels in the default MNIST test dataset.
-- For clearer comprehension, the encrypted image and label files have the form below:
-![enc_dataset](imgs/enc_mnist.png)
+## System setup
 
-## Setting up persistent memory
+### Intel SGX Installations
+-TODO
+
+
+### Persistent memory
 - If you have a machine with real persistent memory, use the following commands to format and mount the drive with DAX enabled. We assume the PM device is `/dev/pmem0`.
 ```
 $ sudo mkdir /mnt/pmem0
@@ -37,6 +32,24 @@ $ sudo mount -t tmpfs /dev/pmem0 /mnt/pmem0
 - All plinius data will then be stored in `/mnt/pmem0/plinius_data`. Modify this path if needed in the file: [Romulus_helper.h](App/Romulus_helper.h). 
 - By default, Plinius uses a `CLFLUSH` instruction for persistent write backs. You can modify this to use an optimized cache-line flush instruction like `CLFLUSHOPT` supported by your CPU. To do this, redefine the `PWB` macro in [pfences.h](Enclave/romulus/common/pfences.h) accordingly. For example: `#define PWB_IS_CLFLUSHOPT`.
 
+## Training and testing a model in Plinius
+
+### Intro
+- As described in the paper, training a model in Plinius is summarized in the workflow below:
+![workflow](imgs/workflow.png)
+- For the sake of simplicity we assume RA and SC have been done successfully and the encryption key has been provisioned to the enclave.i.e `enc_key` variable in [trainer.cpp](Enclave/dnet-in/train/trainer.cpp). This is the same key used for encrypting the mnist data set.
+- We created an encrypted version of the MNIST data set, located in the `App/dnet-out/data/mnist` folder.
+- The encrypted images are divided into four chunks: `img.a-e`. 
+- Combine the images into one file with the command: `cat img.?? > enc_mnist_imgs.data`
+- `enc_mnist_imgs.data` contains 60k encrypted mnist images and `enc_mnist_labels.data` contains 60k corresponding encrypted labels.
+- The images and labels are encrypted with AES-GCM encryption algorithm, with a 16 byte MAC and 12 byte IV attached to each encrypted element (e.g. image or label).
+- `t10k-images*` and `t10k-labels*` represent the images and labels in the default MNIST test dataset.
+- For clearer comprehension, the encrypted image and label files have the form below:
+![enc_dataset](imgs/enc_mnist.png)
+
+### Preparing training data
+-TODO
+
 ### Training the model
 - Plinius is mainly designed for model training but we can do inference too. We added the default mnist test set (10k unencrypted labeled images) just for the purpose of testing the accuracy of our trained model. 
 - In a real setting a programmer who wishes to do inference with Plinius will have to encrypt his inference set and load to PM following the same idea/workflow.
@@ -45,6 +58,10 @@ $ sudo mount -t tmpfs /dev/pmem0 /mnt/pmem0
 - `train_mnist` reads the corresponding network/model configuration file and parses it into a config data structure and sends this to the enclave runtime via the `ecall_trainer` ecall. The config file used in this [example](App/dnet-out/cfg/mnist.cfg) describes a neural network model with 12 LRELU convolutional layers + other intermediary pooling layers, batch size of 128, learning rate of 0.1 and other important hyperparameters. Feel free to modify the config as it suits you, but make sure to follow the correct syntax (i.e Darknet config file syntax).
 - In the enclave we load the encrypted data once into PM and begin the training iterations. 
 - For each iteration, the routine reads batches of encrypted data from PM, decrypts the former in the enclave, trains the model with the batch, and the mirrors-out weights to PM.
+
+### Inference
+-TODO
+
 ### Running the program
 - Clone this project to your local environment. Modify the `SGX_MODE` in the `Makefile` i.e `HW` mode if you have real SGX hardware and `SIM` otherwise.
 - If working in SGX simulation mode, load SGX simulation env variables with: `source /opt/intel/sgxsdk/environment`, assuming you installed the SGX SDK in `/opt/intel` which is the default folder for that installation. Otherwise, replace that part accordingly.
