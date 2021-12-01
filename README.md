@@ -12,14 +12,14 @@
 ## System setup
 - Begin by cloning this repo to your local system. Checkout the `cuso` branch.
 ```
-$ mkdir cuso-plinius
+$ mkdir cuso-plinius && cd cuso-plinius
 $ git clone https://github.com/Yuhala/plinius.git
 $ git checkout cuso
 
 ```
 
 ### Intel SGX Installations
-- To install the Intel SGX SDK, PSW and driver, copy and launch the script `sgx-install.sh` in a separate folder.
+- To install the Intel SGX SDK, PSW and driver, copy and launch the script `sgx-install.sh` in the `cuso-plinius` folder.
 
 ### Persistent memory
 - If you have a machine with real persistent memory, use the following commands to format and mount the drive with DAX enabled. We assume the PM device is `/dev/pmem0`.
