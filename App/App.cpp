@@ -37,7 +37,7 @@ comm_info *comm_out;
 
 
 //forward declarations
-void train_mnist(char *cfgfile)
+void train_mnist(char *cfgfile);
 void test_mnist(char *cfgfile);
 
 
