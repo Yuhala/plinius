@@ -10,7 +10,7 @@
 
 
 ## System setup
-- Begin by cloning this repo to your local system. Checkout the cuso branch.
+- Begin by cloning this repo to your local system. Checkout the `cuso` branch.
 
 ### Intel SGX Installations
 - To install the Intel SGX SDK, PSW and driver, copy and launch the script `sgx-install.sh` in a separate folder.
