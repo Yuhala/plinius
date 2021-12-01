@@ -62,7 +62,10 @@ $ sudo mount -t tmpfs /dev/pmem0 /mnt/pmem0
 - Build the project using `make` command.
 - Run the program using `./plinius`
 - The encrypted data will be read once into PM and training will begin. You can see the loss/average loss decreasing as training proceeds.
-- For each iteration, the routine reads batches of encrypted data from PM, decrypts the former in the enclave, trains the model with the batch, and the mirrors-out weights to PM.
+
+### Fault tolerance
+- Plinius uses a `mirroring mechanism` for fault tolerance: it creates a corresponding model in PM and synchronizes it with the enclave model.
+- For each iteration, the training routine reads batches of encrypted data from PM, decrypts the former in the enclave, trains the model with the batch, and then mirrors-out weights to PM.
 - To test the fault tolerance capabilities, interrupt the program with a `ctrl+c` and restart it again. Upon restart, training data is already in PM and training resumes from the iteration it left off.
 
 ### Inference
