@@ -11,6 +11,12 @@
 
 ## System setup
 - Begin by cloning this repo to your local system. Checkout the `cuso` branch.
+```
+mkdir cuso-plinius
+git clone https://github.com/Yuhala/plinius.git
+git checkout cuso
+
+```
 
 ### Intel SGX Installations
 - To install the Intel SGX SDK, PSW and driver, copy and launch the script `sgx-install.sh` in a separate folder.
