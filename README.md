@@ -36,6 +36,7 @@ $ sudo mount -t tmpfs /dev/pmem0 /mnt/pmem0
 
 ```
 - All plinius data will then be stored in `/mnt/pmem0/plinius_data`. Modify this path if needed in the file: [Romulus_helper.h](App/Romulus_helper.h). 
+- All stores must be flushed, you can't depend on implicit flushes via cache-eviction: `sgx-romulus` handles all this. 
 - By default, Plinius uses a `CLFLUSH` instruction for persistent write backs. You can modify this to use an optimized cache-line flush instruction like `CLFLUSHOPT` supported by your CPU. To do this, redefine the `PWB` macro in [pfences.h](Enclave/romulus/common/pfences.h) accordingly. For example: `#define PWB_IS_CLFLUSHOPT`.
 
 ## Training and testing a model in Plinius
