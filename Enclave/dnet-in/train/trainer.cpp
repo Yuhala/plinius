@@ -231,7 +231,7 @@ void train_mnist(list *sections, data *training_data, int pmem)
         epoch = (*net->seen) / N;
 
         progress = ((double)cur_batch / net->max_batches) * 100;
-        if (cur_batch % LOG_FREQ == 0)
+        if (cur_batch != 0 && cur_batch % LOG_FREQ == 0)
         { //print benchmark progress every LOG_FREQ iters
             PLINIUS_INFO("Batch num: %ld, Avg loss: %f avg, L. rate: %f, Progress: %.2f%% \n",
                          cur_batch, avg_loss, get_current_rate(net), progress);

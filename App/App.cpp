@@ -35,6 +35,12 @@ double diff;
 
 comm_info *comm_out;
 
+
+//forward declarations
+void train_mnist(char *cfgfile)
+void test_mnist(char *cfgfile);
+
+
 //---------------------------------------------------------------------------------
 /**
  * Config files
@@ -179,6 +185,10 @@ int SGX_CDECL main(int argc, char *argv[])
         getchar();
         return -1;
     }
+
+    printf("|=================================|\n");
+    printf("|PLINIUS TUTORIAL CUSO|\n");
+    printf("|=================================|\n");
     //Initialize sgx-rom
     rom_init();
     printf("Base addr is : %p\n", base_addr);
