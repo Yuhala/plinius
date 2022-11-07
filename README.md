@@ -1,5 +1,11 @@
-## Summary
-- `Plinius` is a secure machine learning framework which leverages `Intel SGX` for secure training of neural network models, and `persistent memory` (PM) for fault tolerance.
+## Plinius: Secure and Persistent Machine Learning with Intel SGX and PM
+- `Plinius` is a secure machine learning framework which leverages `Intel SGX` for secure training of neural network models, and `persistent memory` (PM) for fault tolerance. 
+
+- The implementation of Plinius in this repository accompanies our DSN 2021 paper: 
+Peterson Yuhala, Pascal Felber, Valerio Schiavoni, and Alain Tchana: [Plinius: Secure and Persistent Machine Learning Model Training](https://ieeexplore.ieee.org/abstract/document/9505117).
+
+
+## Repository summary
 - Plinius consists of two main libraries: [sgx-romulus](https://github.com/anonymous-xh/sgx-romulus) which is an Intel SGX-compatible PM library we ported from Romulus PM library, and [sgx-dnet](https://github.com/anonymous-xh/sgx-dnet) which is a port of [Darknet](http://pjreddie.com/darknet) ML framework into Intel SGX.
 - This readme gives a quick rundown on how to test secure training in Plinius as described in our paper.
 - NB: Commands here are for linux-based systems 
@@ -59,3 +65,6 @@ $ sudo mount -t tmpfs /dev/pmem0 /mnt/pmem0
 
 ### Youtube presentation
 - [Watch Plinius DSN presentation on youtube](https://www.youtube.com/watch?v=RVbS-zgvlhM)
+
+### Author
+- Peterson Yuhala (petersonyuhala@gmail.com)
