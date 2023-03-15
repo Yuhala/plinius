@@ -1,8 +1,11 @@
 
 /*
- * Created on Wed Feb 26 2020
+ * Created on Fri Feb 14 2020
  *
- * Copyright (c) 2020 xxx xxxx, xxxx
+ * Copyright (c) 2020 Peterson Yuhala <petersonyuhala@gmail.com>
+ *
+ * University of Neuchatel (IIUN),
+ *
  */
 #ifndef CRYPTO_H
 #define CRYPTO_H

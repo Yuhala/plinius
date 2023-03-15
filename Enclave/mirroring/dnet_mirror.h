@@ -1,31 +1,32 @@
 /*
  * Created on Mon Feb 24 2020
  *
- * Copyright (c) 2020 xxx xxxx, xxxx
+ * Copyright (c) 2020 xxx
+ *
+ * University of Neuchatel (IIUN),
  */
 
 #ifndef DNET_MIRROR_H
 #define DNET_MIRROR_H
 
-#define ROMULUS_LOG_PTM 
-//for romulus persistent types
+#define ROMULUS_LOG_PTM
+// for romulus persistent types
 
-//#include "romulus/common/RomSGX.h"
+// #include "romulus/common/RomSGX.h"
 #include "romulus/common/tm.h"
 #include "dnet-in/src/darknet.h"
 #include "crypto/crypto.h"
 
-//class prototype
+// class prototype
 
 class NVModel
 {
 
 public:
-    
     struct Layer
     {
-        TM_TYPE<int> id;       //Layer Id
-        TM_TYPE<Layer *> next; //next layer
+        TM_TYPE<int> id;       // Layer Id
+        TM_TYPE<Layer *> next; // next layer
         /**
          * The following neural net params may or may not exist
          * depending on the type of layer in question.
@@ -39,12 +40,12 @@ public:
 
     TM_TYPE<int> num_layers{0};
 
-    //Epoch: training iteration afterwhich the parameters were saved == net->seen
+    // Epoch: training iteration afterwhich the parameters were saved == net->seen
     TM_TYPE<size_t> epoch{0};
-    TM_TYPE<float> aloss{0.0};      //avg loss at specific epoch
-    TM_TYPE<Layer *> head{nullptr}; //first layer/root
+    TM_TYPE<float> aloss{0.0};      // avg loss at specific epoch
+    TM_TYPE<Layer *> head{nullptr}; // first layer/root
 
-    //public:
+    // public:
     /**
      * Constructors
      */
@@ -66,8 +67,6 @@ public:
      * i.e net --> nv_model
      */
     void mirror_out(network *net, float *avg_loss);
-
-    
 };
 
 #endif /* DNET_MIRROR_H */

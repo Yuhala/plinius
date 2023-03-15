@@ -1,5 +1,7 @@
 /**
- * Author: xxx xxxx
+ * Author: Peterson Yuhala <petersonyuhala@gmail.com>
+ *
+ * University of Neuchatel (IIUN)
  */
 
 /* This module does mmaps/munmaps, and initializes/creates the persistent header and passes this to sgx-remus */
@@ -12,8 +14,6 @@ uint8_t *base_addr = (uint8_t *)0x7fdd40000000;
 uint8_t *real_base_addr = (uint8_t *)(((size_t)(base_addr + 128) << 6) >> 6);
 static int fd = -1;
 
-
-
 /* Create file and do mmap */
 void rom_init()
 {
@@ -23,7 +23,7 @@ void rom_init()
     {
         printf("File exists..doing mmap\n");
         // File exists
-        //std::cout << "Re-using memory region\n";
+        // std::cout << "Re-using memory region\n";
         fd = open(MMAP_FILENAME, O_RDWR | O_CREAT, 0755);
         assert(fd >= 0);
         // mmap() memory range
@@ -35,15 +35,16 @@ void rom_init()
             assert(false);
         }
         per_out = reinterpret_cast<PersistentHeader *>(real_base_addr - sizeof(PersistentHeader));
-        if (per_out->id != MAGIC_ID){           
+        if (per_out->id != MAGIC_ID)
+        {
             create_file();
-        } 
+        }
     }
     else
     {
         create_file();
     }
-    //printf("mmapped file created\n");
+    // printf("mmapped file created\n");
 }
 
 void create_file()
@@ -68,10 +69,10 @@ void create_file()
         perror("ERROR: mmap() is not working !!! ");
         assert(false);
     }
-    //per_out = new ((real_base_addr - sizeof(PersistentHeader))) PersistentHeader;
-    per_out = (PersistentHeader*)(real_base_addr - sizeof(PersistentHeader));
+    // per_out = new ((real_base_addr - sizeof(PersistentHeader))) PersistentHeader;
+    per_out = (PersistentHeader *)(real_base_addr - sizeof(PersistentHeader));
 
-    //the rest is done inside the enclave.
+    // the rest is done inside the enclave.
 }
 
 void close_file()

@@ -1,5 +1,7 @@
 /**
- * Author: xxx xxxx
+ * Author: Peterson Yuhala <petersonyuhala@gmail.com> 
+
+* University of Neuchatel (IIUN)
  */
 
 #ifndef DNET_TYPES_H

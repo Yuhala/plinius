@@ -1,7 +1,15 @@
 /*
  * Created on Tue Feb 25 2020
- * Author:  2020 xxx xxxx, xxxx
- * Copyright Romulus by xxxx and xxxx
+ * Author:  2020 xxx 
+
+* University of Neuchatel (IIUN), 
+
+* University of Neuchatel (IIUN)
+ * Copyright Romulus by 
+
+* University of Neuchatel (IIUN) and 
+
+* University of Neuchatel (IIUN)
  */
 
 #ifndef PFENCES_H

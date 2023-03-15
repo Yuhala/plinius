@@ -2,28 +2,33 @@
 /*
  * Created on Tue Apr 14 2020
  *
- * Copyright (c) 2020 xxxx xxxx, xxxx
+ *
+ * Copyright (c) 2020 Peterson Yuhala <petersonyuhala@gmail.com>
+ *
+ * University of Neuchatel (IIUN),
+ *
  */
+
 
 #ifndef NVDATA_H
 #define NVDATA_H
-#define ROMULUS_LOG_PTM //for romulus persistent types
+#define ROMULUS_LOG_PTM // for romulus persistent types
 
-//#include "romulus/common/RomSGX.h"
+// #include "romulus/common/RomSGX.h"
 #include "romulus/common/tm.h"
 #include "dnet-in/src/darknet.h"
 #include "crypto/crypto.h"
 
-//mnist image xtics
+// mnist image xtics
 #define NUM_IMGS 60000
 #define NUM_LABELS NUM_IMGS
 #define IMG_ROWS 28
 #define IMG_COLS 28
 #define NUM_CLASSES 10
 #define IMG_SIZE 784
-//(IMG_ROWS * IMG_COLS)
+    //(IMG_ROWS * IMG_COLS)
 
-class NVData
+    class NVData
 {
 
 public:
@@ -47,13 +52,13 @@ public:
         TM_TYPE<NvBox **> boxes;
     };
 
-    TM_TYPE<NvData *> nvdata{0}; //main data object
+    TM_TYPE<NvData *> nvdata{0}; // main data object
     TM_TYPE<NvMatrix *> X;
     TM_TYPE<NvMatrix *> Y;
     TM_TYPE<int> data_present = 0;
 
     NVData();
-    //NV Data management
+    // NV Data management
     void alloc();
     void fill_pm_data(data *ptr);
     void shallow_copy_data(data *ptr);

@@ -1,7 +1,11 @@
 /*
  * Created on Fri Mar 06 2020
  *
- * Copyright (c) 2020 xxx xxxx, xxxx
+ * Copyright (c) 2020 xxx
+ *
+ * University of Neuchatel (IIUN),
+ *
+ * 
  */
 #include "benchtools.h"
 
@@ -12,7 +16,7 @@ double get_mean(std::vector<double> &v)
     double sum = std::accumulate(v.begin(), v.end(), 0.0);
     return sum / v.size();
 }
-//Function to swap two pointers
+// Function to swap two pointers
 void swap(double *a, double *b)
 {
     double temp = *a;
@@ -47,12 +51,12 @@ void quicksort(std::vector<double> &target, int left, int right)
 /* Calculate median of array of values */
 double get_median(std::vector<double> &data)
 {
-    //Q0:0 Q1:1 Q2:2(median) Q3:3
-    //Do pointer checks first
+    // Q0:0 Q1:1 Q2:2(median) Q3:3
+    // Do pointer checks first
 
     int index = MEDIAN_INDEX;
     quicksort(data, 0, NUM_ITERATIONS - 1);
-    //printf("Min: %f Max: %f\n", data[0], data[NUM_ITERATIONS - 1]);
+    // printf("Min: %f Max: %f\n", data[0], data[NUM_ITERATIONS - 1]);
     return data[index];
 }
 
@@ -91,9 +95,9 @@ double time_diff(timespec *start, timespec *stop, granularity gran)
         diff = (double)(stop->tv_sec - start->tv_sec) * 1.0e9 + (double)((stop->tv_nsec - start->tv_nsec));
         break;
 
-    case SEC: //seconds
+    case SEC: // seconds
         diff = (double)(stop->tv_sec - start->tv_sec) + (double)((stop->tv_nsec - start->tv_nsec) / 1.0e9);
         break;
     }
-     return diff;
+    return diff;
 }

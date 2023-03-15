@@ -1,5 +1,7 @@
 /**
- * Author: xxx xxxx
+ * Author: Peterson Yuhala <petersonyuhala@gmail.com> 
+
+* University of Neuchatel (IIUN)
  * Purpose: contains data related functionality supported in 
  * the enclave runtime. All functionality commented out is implemented
  * by the support library outside the enclave

@@ -1,7 +1,10 @@
 /*
  * Created on Fri Feb 14 2020
  *
- * Copyright (c) 2020 xxx xxxx, xxxx
+ * Copyright (c) 2020 Peterson Yuhala <petersonyuhala@gmail.com>
+ *
+ * University of Neuchatel (IIUN),
+ *
  */
 
 #ifndef DNET_OCALLS_H

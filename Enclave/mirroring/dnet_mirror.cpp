@@ -1,7 +1,9 @@
 /*
  * Created on Mon Feb 24 2020
  *
- * Copyright (c) 2020 xxx xxxx, xxxx
+ * Copyright (c) 2020 xxx
+ *
+ * University of Neuchatel (IIUN),
  */
 
 #include "dnet_mirror.h"
@@ -23,11 +25,12 @@ void NVModel::allocator(network *net)
     Layer *temp = nullptr;
     int num = (net->n) - 1;
     /**
-     * We create the linked list of layers starting from the last layer and 
+     * We create the linked list of layers starting from the last layer and
      * we connect them till we reach the head; could still be done in the reverse direction :-)
      * Allocate full model in a transaction
      */
-    TM_WRITE_TRANSACTION([&]() {
+    TM_WRITE_TRANSACTION([&]()
+                         {
         num_layers = net->n;
         for (int i = num; i >= 0; i--)
         {
@@ -100,12 +103,11 @@ void NVModel::allocator(network *net)
             default:
                 break;
             }
-        }
-    });
+        } });
 }
 
 /**
- * 
+ *
  * Mirrors/recovers network params from persistent memory into the enclave
  * i.e nv_model --> net
  */
@@ -113,7 +115,7 @@ void NVModel::allocator(network *net)
 void NVModel::mirror_in(network *net, float *avg_loss)
 {
     /**
-     * We traverse the persistent linked list of layers 
+     * We traverse the persistent linked list of layers
      * and mirror the corresponding weights into the enclave neural net
      * We do not need a transaction here
      */
@@ -197,7 +199,7 @@ void NVModel::mirror_in(network *net, float *avg_loss)
 void NVModel::mirror_out(network *net, float *avg_loss)
 {
     /**
-     * We traverse the persistent linked list of layers 
+     * We traverse the persistent linked list of layers
      * and mirror the corresponding weights from the enclave neural net to persistent memory
      * We do the whole "mirror" operation in one transaction to ensure we have a consistent
      * neural network i.e no layers with undefined params or params from different training epochs
@@ -207,7 +209,8 @@ void NVModel::mirror_out(network *net, float *avg_loss)
     Layer *temp = head;
 
     int num = 0;
-    TM_WRITE_TRANSACTION([&]() {
+    TM_WRITE_TRANSACTION([&]()
+                         {
         epoch = *(net->seen);
         aloss = *avg_loss;
         for (int i = 0; i < net->n; i++)
@@ -268,6 +271,5 @@ void NVModel::mirror_out(network *net, float *avg_loss)
             default:
                 break;
             }
-        }
-    });
+        } });
 }

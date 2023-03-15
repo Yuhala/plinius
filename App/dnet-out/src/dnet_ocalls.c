@@ -1,12 +1,15 @@
 /*
  * Created on Fri Feb 14 2020
  *
- * Copyright (c) 2020 xxx xxxx, xxxx
+ * Copyright (c) 2020 Peterson Yuhala <petersonyuhala@gmail.com>
+ *
+ * University of Neuchatel (IIUN),
+ *
  */
 
 #include "dnet_ocalls.h"
 
-//File pointer used for reading/writing files from within the enclave runtime
+// File pointer used for reading/writing files from within the enclave runtime
 FILE *fp = NULL;
 
 void ocall_print_string(const char *str)
@@ -20,7 +23,7 @@ void ocall_print_string(const char *str)
 /* Free section in untrusted memory*/
 void ocall_free_sec(section *sec)
 {
-    //printf("Freeing section in ocall..\n");
+    // printf("Freeing section in ocall..\n");
     free_section(sec);
 }
 
@@ -32,7 +35,7 @@ void ocall_free_list(list *list)
 // 0 for read: 1 for write
 void ocall_open_file(const char *filename, flag oflag)
 {
-    if (!fp) //fp == NULL
+    if (!fp) // fp == NULL
     {
         switch (oflag)
         {
@@ -50,7 +53,7 @@ void ocall_open_file(const char *filename, flag oflag)
         case O_WRPLUS:
             fp = fopen(filename, "w+");
             break;
-        default:; //nothing to do
+        default:; // nothing to do
         }
     }
     else
@@ -66,7 +69,7 @@ void ocall_open_file(const char *filename, flag oflag)
  */
 void ocall_close_file()
 {
-    if (fp) //fp != NULL
+    if (fp) // fp != NULL
     {
         fclose(fp);
         fp = NULL;
@@ -92,7 +95,7 @@ void ocall_fwrite(void *ptr, size_t size, size_t nmemb)
     if (fp)
     {
         fwrite(ptr, size, nmemb, fp);
-        //make sure it is flushed to disk first
+        // make sure it is flushed to disk first
         ret = fflush(fp);
         if (ret != 0)
             printf("fflush did not work..\n");

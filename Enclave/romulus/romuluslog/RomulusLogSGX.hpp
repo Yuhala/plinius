@@ -1,12 +1,40 @@
 /**
- * Author: xxx xxxx
+ * Author: Peterson Yuhala <petersonyuhala@gmail.com> 
+
+* University of Neuchatel (IIUN)
  * Modified version of RomulusLog library compatible
  * with intel SGX.
  * 
  * Copyright 2017-2018
- *   xxxx xxxx <xxxx.xxxx@xxxx>
- *   xxxx xxxx <xxxx.xxxx@xxxx>
- *   xxxx xxxx <xxxx@gmail.com>
+ *   
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN) <
+
+* University of Neuchatel (IIUN).
+
+* University of Neuchatel (IIUN)@
+
+* University of Neuchatel (IIUN)>
+ *   
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN) <
+
+* University of Neuchatel (IIUN).
+
+* University of Neuchatel (IIUN)@
+
+* University of Neuchatel (IIUN)>
+ *   
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN) <
+
+* University of Neuchatel (IIUN)@gmail.com>
  * 
  */
 
@@ -855,7 +883,9 @@ public:
         }
         else
         {
-            //xxx xxxx: commented out thread related code
+            //xxx 
+
+* University of Neuchatel (IIUN): commented out thread related code
             while (!gRomLog.rwlock.tryExclusiveLock()) Pause();
             gRomLog.compareMainAndBack();
             gRomLog.rwlock.exclusiveUnlock();

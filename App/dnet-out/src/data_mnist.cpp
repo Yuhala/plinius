@@ -1,12 +1,15 @@
 /*
  * Created on Wed Feb 19 2020
  *
- * Copyright (c) 2020 xxxx xxxx, xxxx
+ * Copyright (c) 2020 Peterson Yuhala <petersonyuhala@gmail.com>
+ *
+ * University of Neuchatel (IIUN)
+ *
  */
 
 #include "data_mnist.h"
 #include "dnet_types.h"
-//size of additional encryption data
+// size of additional encryption data
 #define AED 28
 
 /**
@@ -22,7 +25,7 @@ uint32_t swap_bytes(uint32_t val)
 /**
  * Author: Peterson Yuhala
  * Mnist metadata:
- * There 4 files after decompressing are: 
+ * There 4 files after decompressing are:
  * train-images-idx3-ubyte: training set images (45MB)
  * train-labels-idx1-ubyte: training set labels (60KB)
  * t10k-images-idx3-ubyte:  test set images (7.5MB)
@@ -39,8 +42,8 @@ uint32_t swap_bytes(uint32_t val)
 data load_mnist_images(std::string path, size_t chunk_size)
 {
 
-    //static size_t chunk_read = 0;
-    // Read file
+    // static size_t chunk_read = 0;
+    //  Read file
     std::ifstream file(path, std::ios::binary);
 
     uint32_t magic_num = 0;
@@ -68,11 +71,11 @@ data load_mnist_images(std::string path, size_t chunk_size)
     image_size = rows * cols;
 
     printf("num images: %d\nimg rows: %d\nimg cols: %d\nimg size: %d\n", num_images, rows, cols, image_size);
-    //create data matrices
+    // create data matrices
     data d = {0};
     d.shallow = 0;
-    matrix X = make_matrix(chunk_size, image_size); //images
-    //NB: d.y will be filled in the routine that calls this one via load_mnist_labels
+    matrix X = make_matrix(chunk_size, image_size); // images
+    // NB: d.y will be filled in the routine that calls this one via load_mnist_labels
     /**
      *        i/j_ _ _
      * X.vals[0]|_|_|_| --> 1 grayscale image
@@ -88,18 +91,18 @@ data load_mnist_images(std::string path, size_t chunk_size)
     for (int i = 0; i < chunk_size; i++)
     {
 
-        //copy byte by byte into X.vals
+        // copy byte by byte into X.vals
         for (int j = 0; j < image_size; j++)
         {
             file.read((char *)&temp, sizeof(temp));
             X.vals[i][j] = (float)temp;
         }
     }
-    //NB. the same bytes/images will be read each time but its equivalent
-    //make X the image data values of d
+    // NB. the same bytes/images will be read each time but its equivalent
+    // make X the image data values of d
     d.X = X;
     scale_data_rows(d, 1. / 255);
-    //print_matrix(X);
+    // print_matrix(X);
 
     file.close();
 
@@ -110,11 +113,11 @@ matrix load_mnist_labels(std::string path, size_t chunk_size)
 {
     // Read file
     std::ifstream file(path, std::ios::binary);
-    //static size_t chunk_read = 0;
+    // static size_t chunk_read = 0;
 
     uint32_t magic_num = 0;
     uint32_t num_labels = 0;
-    /* 
+    /*
     if (!file.is_open)
         ERROR(); */
     // Read the magic num (file signature) and dataset meta data
@@ -127,8 +130,8 @@ matrix load_mnist_labels(std::string path, size_t chunk_size)
     file.read((char *)&num_labels, sizeof(num_labels));
     num_labels = swap_bytes(num_labels);
     printf("num labels: %d\n", num_labels);
-    matrix Y = make_matrix(chunk_size, NUM_CLASSES); //labels
-    //this matrix will be d.y for the mnist training/test data
+    matrix Y = make_matrix(chunk_size, NUM_CLASSES); // labels
+    // this matrix will be d.y for the mnist training/test data
     /**
      *        i/j_ _ _
      * Y.vals[0]|0|1|0| --> the corresponding label is the class corresponding to the 1
@@ -148,43 +151,42 @@ matrix load_mnist_labels(std::string path, size_t chunk_size)
     }
     for (int i = 0; i < chunk_size; i++)
     {
-        //label is an int in [0,9]
+        // label is an int in [0,9]
         file.read(&label_class, 1);
         Y.vals[i][(int)label_class] = 1;
-        //std::cout << "Label: " << (int)label_class << std::endl;
+        // std::cout << "Label: " << (int)label_class << std::endl;
     }
 
-    //print_matrix(Y);
+    // print_matrix(Y);
     file.close();
     return Y;
 }
 data load_enc_mnist_images(std::string path, size_t chunk_size)
 {
 
-    //static size_t chunk_read = 0;
-    // Read file
+    // static size_t chunk_read = 0;
+    //  Read file
     std::ifstream file(path, std::ios::binary);
 
-    //uint32_t magic_num = 0;
+    // uint32_t magic_num = 0;
     uint32_t num_images = 0;
     uint32_t rows = 0;
     uint32_t cols = 0;
     uint32_t image_size = 0;
 
-   
     file.read((char *)&rows, sizeof(rows));
-    //rows = swap_bytes(rows);
+    // rows = swap_bytes(rows);
     file.read((char *)&cols, sizeof(cols));
     file.read((char *)&num_images, sizeof(num_images));
-    //cols = swap_bytes(cols);
+    // cols = swap_bytes(cols);
     image_size = rows * cols;
 
     printf("num images: %d\nimg rows: %d\nimg cols: %d\nimg size: %d\n", num_images, rows, cols, image_size);
-    //create data matrices
+    // create data matrices
     data d = {0};
     d.shallow = 0;
-    matrix X = make_enc_matrix(chunk_size, image_size, AED); //images
-    
+    matrix X = make_enc_matrix(chunk_size, image_size, AED); // images
+
     if (chunk_size > num_images)
     {
         printf("chunk_size > num_images\n");
@@ -197,12 +199,11 @@ data load_enc_mnist_images(std::string path, size_t chunk_size)
 
         file.read(temp, size);
         memcpy(X.vals[i], temp, size);
-        
     }
-   
+
     d.X = X;
-    //scale_data_rows(d, 1. / 255);
-    //print_matrix(X);
+    // scale_data_rows(d, 1. / 255);
+    // print_matrix(X);
 
     file.close();
 
@@ -213,16 +214,16 @@ matrix load_enc_mnist_labels(std::string path, size_t chunk_size)
 {
     // Read file
     std::ifstream file(path, std::ios::binary);
-    //static size_t chunk_read = 0;
+    // static size_t chunk_read = 0;
 
-    //uint32_t magic_num = 0;
-    uint32_t num_labels = 0;  
+    // uint32_t magic_num = 0;
+    uint32_t num_labels = 0;
 
     file.read((char *)&num_labels, sizeof(num_labels));
-    //num_labels = swap_bytes(num_labels);
+    // num_labels = swap_bytes(num_labels);
     printf("num labels: %d\n", num_labels);
-    matrix Y = make_enc_matrix(chunk_size, NUM_CLASSES, AED); //labels
-   
+    matrix Y = make_enc_matrix(chunk_size, NUM_CLASSES, AED); // labels
+
     char label_class;
     if (chunk_size > num_labels)
     {
@@ -236,10 +237,9 @@ matrix load_enc_mnist_labels(std::string path, size_t chunk_size)
 
         file.read(temp, size);
         memcpy(Y.vals[i], temp, size);
-        
     }
 
-    //print_matrix(Y);
+    // print_matrix(Y);
     file.close();
     return Y;
 }

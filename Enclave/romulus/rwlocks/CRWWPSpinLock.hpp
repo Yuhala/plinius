@@ -1,5 +1,13 @@
 /******************************************************************************
- * Copyright (c) 2014-2017, xxxx xxxx, xxxx xxxx
+ * Copyright (c) 2014-2017, 
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN), 
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,8 +72,16 @@
  * C-RW-WP paper:         http://dl.acm.org/citation.cfm?id=2442532
  *
  * <p>
- * @author xxxx xxxx
- * @author xxxx xxxx
+ * @author 
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN)
+ * @author 
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN)
  */
 class CRWWPSpinLock {
 

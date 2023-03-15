@@ -1,8 +1,34 @@
 /*
  * Copyright 2017-2018
- *   xxxx xxxx <xxxx.xxxx@xxxx>
- *   xxxx xxxx <xxxx.xxxx@xxxx>
- *   xxxx xxxx <xxxx@gmail.com>
+ *   
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN) <
+
+* University of Neuchatel (IIUN).
+
+* University of Neuchatel (IIUN)@
+
+* University of Neuchatel (IIUN)>
+ *   
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN) <
+
+* University of Neuchatel (IIUN).
+
+* University of Neuchatel (IIUN)@
+
+* University of Neuchatel (IIUN)>
+ *   
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN) <
+
+* University of Neuchatel (IIUN)@gmail.com>
  *
  * This work is published under the MIT license. See LICENSE.TXT
  */

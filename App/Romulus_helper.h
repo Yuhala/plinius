@@ -1,5 +1,7 @@
 /**
- * Author: xxx xxxx
+ * Author: Peterson Yuhala <petersonyuhala@gmail.com>
+ *
+ * University of Neuchatel (IIUN)
  */
 
 #ifndef ROMULUS_HELPER_
@@ -20,7 +22,7 @@
 #include "rom_types.h" //persistent header
 
 #define MMAP_FILENAME "/mnt/pmem0/plinius_data"
-#define MAX_SIZE 400 * 1024 * 1024 //400mb
+#define MAX_SIZE 400 * 1024 * 1024 // 400mb
 #define MAGIC_ID 0x1337BAB2
 
 #if defined(__cplusplus)

@@ -1,6 +1,10 @@
 #
-# Author: xxx xxxx
-# Copyright (C) 2020 xxxx. All rights reserved. 
+# Author: Peterson Yuhala <petersonyuhala@gmail.com> 
+
+# University of Neuchatel (IIUN)
+# Copyright (C) 2020 
+
+# University of Neuchatel (IIUN). All rights reserved. 
 #
 
 ######## SGX SDK Settings ########

@@ -1,13 +1,16 @@
 /*
  * Created on Wed Feb 19 2020
  *
- * Copyright (c) 2020 xxx xxxx, xxxx
+ * Copyright (c) 2020 xxx
+ *
+ * University of Neuchatel (IIUN),
+ *
  */
 
 #ifndef DATA_MNIST_H
 #define DATA_MNIST_H
 
-//use C linkage for these
+// use C linkage for these
 extern "C"
 {
 #include "data.h"
@@ -30,9 +33,9 @@ extern "C"
     {                                                                              \
         std::cout << "I/O error in:" << __func__ << ": " << __LINE__ << std::endl; \
     }
-//num of images in mnist dataset
+// num of images in mnist dataset
 #define NUM_IMGS_MNIST 60000
-//number of classes in mnist dataset
+// number of classes in mnist dataset
 #define NUM_CLASSES 10
 
 uint32_t swap_bytes(uint32_t *);

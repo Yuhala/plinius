@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Author: xxx
+# Author: Peterson Yuhala <petersonyuhala@gmail.com>
 # Full training with typical spot-vm crash/restore pattern
 #
 

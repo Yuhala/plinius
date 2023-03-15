@@ -1,5 +1,11 @@
-/**
- * Author: xxx xxxx
+/*
+ * Created on Fri Feb 14 2020
+ *
+ * Copyright (c) 2020 Peterson Yuhala <petersonyuhala@gmail.com>
+ *
+ * University of Neuchatel (IIUN),
+ *
+ *
  * Cryptography fxnality
  * Encrypt and Decrypt: AES-GCM and CTR modes with 128 bit keys
  */
@@ -8,11 +14,11 @@
 #include "dnet_types.h"
 
 /**
- *  Galois Counter Mode encryption is used with 128bit key 
+ *  Galois Counter Mode encryption is used with 128bit key
  *  GCM provides both confidentiality and integrity
  *  CTR does not provide integrity
  */
-//static sgx_aes_gcm_128bit_key_t key = {0x76, 0x39, 0x79, 0x24, 0x42, 0x26, 0x45, 0x28, 0x48, 0x2b, 0x4d, 0x3b, 0x62, 0x51, 0x5e, 0x8f};
+// static sgx_aes_gcm_128bit_key_t key = {0x76, 0x39, 0x79, 0x24, 0x42, 0x26, 0x45, 0x28, 0x48, 0x2b, 0x4d, 0x3b, 0x62, 0x51, 0x5e, 0x8f};
 sgx_aes_gcm_128bit_key_t key;
 void encryptData(void *dataIn, size_t len, char *dataOut, size_t lenOut, AES_ALGO algo)
 {
@@ -20,14 +26,14 @@ void encryptData(void *dataIn, size_t len, char *dataOut, size_t lenOut, AES_ALG
 	uint8_t *clairText = (uint8_t *)dataIn;
 	uint8_t p_dst[BUFLEN] = {0};
 	const uint32_t num_inc_bits = 128;
-	//Algorithm: 0-GCM 1-CTR
+	// Algorithm: 0-GCM 1-CTR
 
 	switch (algo)
 	{
 	case GCM /*GCM mode*/:
 		// Generate the IV (nonce)
-		/* 
-		 If the IV/nonce is random, it can be combined together with the counter (XOR, addition etc)				
+		/*
+		 If the IV/nonce is random, it can be combined together with the counter (XOR, addition etc)
 		to produce the actual unique counter block for encryption */
 
 		sgx_read_rand(p_dst + SGX_AESGCM_MAC_SIZE, SGX_AESGCM_IV_SIZE);
@@ -39,7 +45,7 @@ void encryptData(void *dataIn, size_t len, char *dataOut, size_t lenOut, AES_ALG
 			p_dst + SGX_AESGCM_MAC_SIZE, SGX_AESGCM_IV_SIZE,
 			NULL, 0,
 			(sgx_aes_gcm_128bit_tag_t *)(p_dst));
-		//dataOut[lenOut] = '\0'; //Terminate encrypted data
+		// dataOut[lenOut] = '\0'; //Terminate encrypted data
 		memcpy(dataOut, p_dst, lenOut);
 		break;
 
@@ -54,7 +60,7 @@ void encryptData(void *dataIn, size_t len, char *dataOut, size_t lenOut, AES_ALG
 			p_dst,
 			num_inc_bits,
 			p_dst + SGX_AESGCM_IV_SIZE);
-		//dataOut[lenOut] = '\0';
+		// dataOut[lenOut] = '\0';
 		memcpy(dataOut, p_dst, lenOut);
 		break;
 	}
@@ -77,9 +83,9 @@ void decryptData(char *dataIn, size_t len, void *dataOut, size_t lenOut, AES_ALG
 			cipherText + SGX_AESGCM_MAC_SIZE, SGX_AESGCM_IV_SIZE,
 			NULL, 0,
 			(sgx_aes_gcm_128bit_tag_t *)cipherText);
-		//dataOut[lenOut] = '\0';
+		// dataOut[lenOut] = '\0';
 		memcpy(dataOut, p_dst, lenOut);
-		//emit_debug((char *) p_dst);
+		// emit_debug((char *) p_dst);
 		break;
 
 	case CTR /*CTR mode*/:

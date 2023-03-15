@@ -1,6 +1,20 @@
 /**
- * Author: xxx xxxx
- * Based of RomulusLog code by: xxxx xxxx, xxxx xxxx, xxxx xxxx
+ * Author: Peterson Yuhala <petersonyuhala@gmail.com> 
+
+* University of Neuchatel (IIUN)
+ * Based of RomulusLog code by: 
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN), 
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN), 
+
+* University of Neuchatel (IIUN) 
+
+* University of Neuchatel (IIUN)
  */
 
 #ifndef ROMSGX_H
